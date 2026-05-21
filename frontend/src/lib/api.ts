@@ -4,7 +4,7 @@ import {
   LoginPayload,
   RegisterPayload,
 } from "@/types/auth";
-import { SaveSelectionPayload, StatsResponse } from "@/types";
+import { Player, SaveSelectionPayload, StatsResponse } from "@/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api";
 
@@ -64,4 +64,46 @@ export async function saveSelection(payload: SaveSelectionPayload) {
 export async function getStats(): Promise<StatsResponse> {
   const { data } = await http.get("/selections/stats");
   return data as StatsResponse;
+}
+
+// ─── Players ──────────────────────────────────────────────────────────────────
+
+const POSITION_GROUP: Record<string, Player["group"]> = {
+  goalkeeper: "GK",
+  defender:   "DEF",
+  midfielder: "MID",
+  forward:    "FWD",
+};
+
+const POSITION_LABEL: Record<string, string> = {
+  goalkeeper: "Portero",
+  defender:   "Defensa",
+  midfielder: "Mediocampista",
+  forward:    "Delantero",
+};
+
+interface ApiPlayerRaw {
+  id:                  number;
+  full_name:           string;
+  position:            string;
+  age:                 number | null;
+  nationality:         string | null;
+  in_wc_prelista_2026: boolean;
+  club:                { name: string } | null;
+}
+
+export async function getColombiaPlayers(): Promise<Player[]> {
+  const { data } = await http.get<{ data: ApiPlayerRaw[] }>(
+    "/federations/COL/players",
+    { params: { prelista: 1 } }
+  );
+  return data.data.map((p) => ({
+    id:       p.id,
+    name:     p.full_name,
+    position: POSITION_LABEL[p.position] ?? p.position,
+    group:    POSITION_GROUP[p.position] ?? "MID",
+    age:      p.age ?? 0,
+    club:     p.club?.name ?? "",
+    country:  p.nationality ?? "",
+  }));
 }

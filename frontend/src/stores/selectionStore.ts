@@ -1,25 +1,31 @@
 "use client";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { FormationName, PlacedPlayersMap } from "@/types";
+import { FormationName, PlacedPlayersMap, Player } from "@/types";
+import { PLAYERS } from "@/lib/players";
 
 interface SelectionState {
+  // Dynamic player catalog (starts with static fallback, updated from API)
+  players:    Player[];
+  playersMap: Record<number, Player>;
+  setPlayers: (players: Player[]) => void;
+
   // Squad of 23
   selectedPlayers: number[];
   addPlayer:       (id: number) => void;
   removePlayer:    (id: number) => void;
-  togglePlayer:    (id: number) => boolean; // true = added, false = removed
+  togglePlayer:    (id: number) => boolean;
 
   // Starting 11
-  placedMap:       PlacedPlayersMap;
-  formation:       FormationName;
-  setFormation:    (f: FormationName) => void;
-  placeOnSlot:     (slot: string, playerId: number) => void;
-  removeFromSlot:  (slot: string) => void;
-  resetLineup:     () => void;
+  placedMap:      PlacedPlayersMap;
+  formation:      FormationName;
+  setFormation:   (f: FormationName) => void;
+  placeOnSlot:    (slot: string, playerId: number) => void;
+  removeFromSlot: (slot: string) => void;
+  resetLineup:    () => void;
 
   // Full reset
-  resetAll:        () => void;
+  resetAll: () => void;
 }
 
 const SQUAD_SIZE = 23;
@@ -27,6 +33,16 @@ const SQUAD_SIZE = 23;
 export const useSelectionStore = create<SelectionState>()(
   persist(
     (set, get) => ({
+      // ── Player catalog ────────────────────────────────
+      players:    PLAYERS,
+      playersMap: Object.fromEntries(PLAYERS.map((p) => [p.id, p])),
+
+      setPlayers: (players) =>
+        set({
+          players,
+          playersMap: Object.fromEntries(players.map((p) => [p.id, p])),
+        }),
+
       // ── Squad of 23 ──────────────────────────────────
       selectedPlayers: [],
 
@@ -41,7 +57,6 @@ export const useSelectionStore = create<SelectionState>()(
       removePlayer: (id) =>
         set((s) => ({
           selectedPlayers: s.selectedPlayers.filter((x) => x !== id),
-          // Also remove from field if placed
           placedMap: Object.fromEntries(
             Object.entries(s.placedMap).filter(([, v]) => v !== id)
           ),
@@ -66,7 +81,6 @@ export const useSelectionStore = create<SelectionState>()(
 
       placeOnSlot: (slot, playerId) =>
         set((s) => {
-          // Remove player from any previous slot first
           const cleaned = Object.fromEntries(
             Object.entries(s.placedMap).filter(([, v]) => v !== playerId)
           );
@@ -92,6 +106,7 @@ export const useSelectionStore = create<SelectionState>()(
         selectedPlayers: s.selectedPlayers,
         placedMap:       s.placedMap,
         formation:       s.formation,
+        // players y playersMap NO se persisten — vienen de la API en cada sesión
       }),
     }
   )

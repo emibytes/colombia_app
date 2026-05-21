@@ -1,13 +1,13 @@
 "use client";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, SpeakerSlash, SpeakerHigh } from "@phosphor-icons/react";
-import { PLAYERS } from "@/lib/players";
 import { GROUP_LABELS } from "@/lib/players";
 import { PlayerGroup } from "@/types";
 import { useSelectionStore } from "@/stores/selectionStore";
 import { useSound } from "@/hooks/useSound";
+import { getColombiaPlayers } from "@/lib/api";
 import PlayerCard from "./PlayerCard";
 import GoalOverlay from "@/components/ui/GoalOverlay";
 
@@ -16,24 +16,25 @@ const FILTERS = ["ALL", "GK", "DEF", "MID", "FWD"] as const;
 type Filter = (typeof FILTERS)[number];
 
 export default function SelectionClient() {
-  const { selectedPlayers, togglePlayer } = useSelectionStore();
+  const { players, setPlayers, selectedPlayers, togglePlayer } = useSelectionStore();
   const sound = useSound();
   const [filter, setFilter]     = useState<Filter>("ALL");
   const [showGoal, setShowGoal] = useState(false);
+
+  useEffect(() => {
+    getColombiaPlayers().then(setPlayers).catch(() => null);
+  }, [setPlayers]);
 
   const count    = selectedPlayers.length;
   const pct      = Math.round((count / SQUAD_SIZE) * 100);
   const complete = count === SQUAD_SIZE;
 
-  const filtered = PLAYERS.filter(
+  const filtered = players.filter(
     (p) => filter === "ALL" || p.group === filter
   );
 
   const handleToggle = useCallback(
     (id: number) => {
-      const player = PLAYERS.find((p) => p.id === id);
-      if (!player) return;
-
       const isSelected = selectedPlayers.includes(id);
 
       if (isSelected) {
@@ -66,13 +67,11 @@ export default function SelectionClient() {
       <div className="sticky top-[4.5rem] z-40 bg-[rgba(5,8,15,0.92)] backdrop-blur-xl border-b border-[var(--border)]">
         <div className="max-w-screen-xl mx-auto px-4 py-3 flex items-center gap-4 flex-wrap">
 
-          {/* Counter */}
           <div className="font-display text-2xl tracking-wide shrink-0">
             <span className="text-[var(--yellow)] text-3xl">{count}</span>
             <span className="text-[var(--muted)]"> / {SQUAD_SIZE}</span>
           </div>
 
-          {/* Progress bar */}
           <div className="flex-1 min-w-[120px] h-1 bg-white/8 rounded-full overflow-hidden">
             <motion.div
               className="h-full bg-gradient-to-r from-[var(--yellow)] to-[var(--red)] rounded-full"
@@ -81,7 +80,6 @@ export default function SelectionClient() {
             />
           </div>
 
-          {/* Filters */}
           <div className="flex gap-1.5 flex-wrap">
             {FILTERS.map((f) => (
               <button
@@ -98,22 +96,17 @@ export default function SelectionClient() {
             ))}
           </div>
 
-          {/* Sound toggle */}
           <button
             onClick={sound.toggle}
             className="p-2 rounded-full border border-[var(--border)] text-[var(--muted)] hover:text-white hover:border-[var(--border2)] transition-all duration-250"
           >
-            {sound.muted
-              ? <SpeakerSlash size={16} />
-              : <SpeakerHigh  size={16} />}
+            {sound.muted ? <SpeakerSlash size={16} /> : <SpeakerHigh size={16} />}
           </button>
         </div>
       </div>
 
       {/* ── Player grid ────────────────────────────────── */}
       <div className="max-w-screen-xl mx-auto px-4 pt-6">
-
-        {/* Section heading */}
         <motion.div
           className="mb-6"
           initial={{ opacity: 0, y: 16 }}
@@ -121,11 +114,10 @@ export default function SelectionClient() {
           transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
         >
           <span className="inline-flex items-center gap-2 bg-[rgba(252,209,22,0.08)] border border-[var(--border2)] rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.18em] font-semibold text-[var(--yellow)]">
-            Prelista oficial · 36 jugadores
+            Prelista oficial · {players.length} jugadores
           </span>
           <h1 className="font-display text-4xl md:text-5xl mt-2 tracking-wide">
-            ELIGE TUS{" "}
-            <span className="text-[var(--yellow)]">23</span>
+            ELIGE TUS <span className="text-[var(--yellow)]">23</span>
           </h1>
           <p className="text-[var(--muted)] text-sm mt-1">
             Haz clic en cada jugador para seleccionarlo o deseleccionarlo.
@@ -142,7 +134,7 @@ export default function SelectionClient() {
                 key={p.id}
                 layout
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0  }}
+                animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ delay: i * 0.03, duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
               >
@@ -163,15 +155,14 @@ export default function SelectionClient() {
         {count > 0 && (
           <motion.div
             className="fixed bottom-0 left-0 right-0 z-50 bg-[rgba(5,8,15,0.95)] backdrop-blur-xl border-t border-[var(--border)] px-4 py-3"
-            initial={{ y: 80  }}
-            animate={{ y: 0   }}
+            initial={{ y: 80 }}
+            animate={{ y: 0 }}
             exit={{ y: 80 }}
             transition={{ type: "spring", stiffness: 260, damping: 28 }}
           >
             <div className="max-w-screen-xl mx-auto flex items-center justify-between gap-4">
               <p className="text-sm text-[var(--muted)]">
-                <strong className="text-[var(--yellow)]">{count}</strong> de{" "}
-                {SQUAD_SIZE} seleccionados
+                <strong className="text-[var(--yellow)]">{count}</strong> de {SQUAD_SIZE} seleccionados
               </p>
               {complete && (
                 <Link href="/once">
@@ -193,12 +184,7 @@ export default function SelectionClient() {
         )}
       </AnimatePresence>
 
-      {/* Goal overlay */}
-      <GoalOverlay
-        show={showGoal}
-        text="¡23 ELEGIDOS!"
-        onDone={() => setShowGoal(false)}
-      />
+      <GoalOverlay show={showGoal} text="¡23 ELEGIDOS!" onDone={() => setShowGoal(false)} />
     </div>
   );
 }

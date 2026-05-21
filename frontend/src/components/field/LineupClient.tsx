@@ -3,7 +3,6 @@ import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "@phosphor-icons/react";
-import { PLAYERS_MAP } from "@/lib/players";
 import { FORMATIONS } from "@/lib/formations";
 import { FormationName } from "@/types";
 import { useSelectionStore } from "@/stores/selectionStore";
@@ -18,7 +17,7 @@ const FORMATION_NAMES: FormationName[] = ["4-3-3", "4-4-2", "4-2-3-1", "3-5-2", 
 
 export default function LineupClient() {
   const {
-    selectedPlayers, placedMap, formation,
+    selectedPlayers, placedMap, formation, playersMap,
     setFormation, placeOnSlot, removeFromSlot,
   } = useSelectionStore();
 
@@ -124,7 +123,7 @@ export default function LineupClient() {
             </h1>
             <p className="text-[var(--muted)] text-sm mt-1">
               {activePlayer
-                ? `Selecciona una posición para ${PLAYERS_MAP[activePlayer]?.name}`
+                ? `Selecciona una posición para ${playersMap[activePlayer]?.name}`
                 : "Elige un jugador del banco y luego toca su posición en el campo."}
             </p>
           </div>
@@ -147,7 +146,7 @@ export default function LineupClient() {
               {/* Position spots */}
               {formationDef.positions.map((pos) => {
                 const playerId = placedMap[pos.slot];
-                const player   = playerId ? PLAYERS_MAP[playerId] : undefined;
+                const player   = playerId ? playersMap[playerId] : undefined;
                 return (
                   <FieldSpot
                     key={pos.slot}
@@ -169,7 +168,7 @@ export default function LineupClient() {
           <div className="flex flex-col gap-1.5 max-h-[65vh] overflow-y-auto pr-1 scrollbar-thin">
             <AnimatePresence>
               {selectedPlayers.map((id, i) => {
-                const player  = PLAYERS_MAP[id];
+                const player  = playersMap[id];
                 if (!player) return null;
                 const placed   = Object.values(placedMap).includes(id);
                 const isActive = activePlayer === id;

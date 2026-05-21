@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowCounterClockwise, FloppyDisk } from "@phosphor-icons/react";
-import { PLAYERS_MAP } from "@/lib/players";
 import { FORMATIONS } from "@/lib/formations";
 import { useSelectionStore } from "@/stores/selectionStore";
 import { useSound } from "@/hooks/useSound";
@@ -18,7 +17,7 @@ import FieldSpot from "@/components/field/FieldSpot";
 type SaveStatus = "idle" | "saving" | "saved" | "error";
 
 export default function ResultClient() {
-  const { selectedPlayers, placedMap, formation, resetAll } = useSelectionStore();
+  const { selectedPlayers, placedMap, formation, playersMap, resetAll } = useSelectionStore();
   const sound      = useSound();
   const [status,   setStatus]   = useState<SaveStatus>("idle");
   const [stats,    setStats]    = useState<StatsResponse | null>(null);
@@ -102,7 +101,7 @@ export default function ResultClient() {
             </h2>
             <div className="grid grid-cols-1 gap-1.5">
               {selectedPlayers.map((id, i) => {
-                const player = PLAYERS_MAP[id];
+                const player = playersMap[id];
                 if (!player) return null;
                 return (
                   <div key={id} className="flex items-center gap-3 py-1.5 border-b border-[var(--border)] last:border-0">
@@ -150,7 +149,7 @@ export default function ResultClient() {
                       <FieldSpot
                         key={pos.slot}
                         pos={pos}
-                        player={playerId ? PLAYERS_MAP[playerId] : undefined}
+                        player={playerId ? playersMap[playerId] : undefined}
                         active={false}
                         onSpotClick={() => {}}
                         onRemove={() => {}}
@@ -195,8 +194,8 @@ export default function ResultClient() {
                 {stats.top_squad.map((item, i) => {
                   const maxVotes = stats.top_squad[0]?.votes ?? 1;
                   const pct = Math.round((item.votes / maxVotes) * 100);
-                  // Names live client-side; enrich from PLAYERS_MAP by id
-                  const displayName = PLAYERS_MAP[item.id]?.name ?? item.name;
+                  // Names live client-side; enrich from playersMap by id
+                  const displayName = playersMap[item.id]?.name ?? item.name;
                   return (
                     <div key={item.id} className="flex items-center gap-3">
                       <span className="font-display text-lg text-[var(--muted)] w-5 shrink-0">{i + 1}</span>
