@@ -21,7 +21,10 @@
       "Bash(php -l /c/xampp/htdocs/colombia_app/backend/app/Models/Vote.php)",
       "Bash(php -l /c/xampp/htdocs/colombia_app/backend/app/Http/Requests/StoreSelectionRequest.php)",
       "Bash(php -l /c/xampp/htdocs/colombia_app/backend/app/Http/Controllers/Api/SelectionController.php)",
-      "Bash(php -l /c/xampp/htdocs/colombia_app/backend/routes/api.php)"
+      "Bash(php -l /c/xampp/htdocs/colombia_app/backend/routes/api.php)",
+      "Bash(php -r ' *)",
+      "Bash(git add *)",
+      "Bash(git checkout *)"
     ]
   }
 }
