@@ -8,7 +8,7 @@ class Selection extends Model
 {
     protected $table = 'selections';
 
-    protected $fillable = ['session_id', 'squad_players', 'starting_eleven', 'formation'];
+    protected $fillable = ['session_id', 'user_id', 'squad_players', 'starting_eleven', 'formation'];
 
     protected $casts = [
         'squad_players'   => 'array',

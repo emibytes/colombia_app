@@ -7,6 +7,7 @@ use App\Http\Requests\StoreSelectionRequest;
 use App\Models\Selection;
 use App\Models\Vote;
 use Illuminate\Http\JsonResponse;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class SelectionController extends Controller
 {
@@ -16,16 +17,26 @@ class SelectionController extends Controller
      */
     public function store(StoreSelectionRequest $request): JsonResponse
     {
-        $data = $request->validated();
+        $data   = $request->validated();
+        $pat    = $request->bearerToken()
+                    ? PersonalAccessToken::findToken($request->bearerToken())
+                    : null;
+        $userId = $pat?->tokenable_id;
+
+        $updateData = [
+            'squad_players'   => $data['squad_players'],
+            'starting_eleven' => $data['starting_eleven'] ?? null,
+            'formation'       => $data['formation'],
+        ];
+
+        if ($userId) {
+            $updateData['user_id'] = $userId;
+        }
 
         // Upsert — one record per session_id
         $selection = Selection::updateOrCreate(
             ['session_id' => $data['session_id']],
-            [
-                'squad_players'   => $data['squad_players'],
-                'starting_eleven' => $data['starting_eleven'] ?? null,
-                'formation'       => $data['formation'],
-            ]
+            $updateData
         );
 
         // Record individual votes when a starting 11 is provided
