@@ -1,11 +1,26 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ClubController;
 use App\Http\Controllers\Api\ConfederationController;
 use App\Http\Controllers\Api\FederationController;
 use App\Http\Controllers\Api\PlayerController;
 use App\Http\Controllers\Api\SelectionController;
+use App\Http\Controllers\Api\SocialAuthController;
 use Illuminate\Support\Facades\Route;
+
+// Auth — credentials
+Route::prefix('auth')->group(function () {
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('login',    [AuthController::class, 'login']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('logout', [AuthController::class, 'logout']);
+        Route::get('me',      [AuthController::class, 'me']);
+    });
+    // OAuth — redirect + callback
+    Route::get('{provider}/redirect',  [SocialAuthController::class, 'redirect']);
+    Route::get('{provider}/callback',  [SocialAuthController::class, 'callback']);
+});
 
 Route::prefix('selections')->group(function () {
     Route::post('/',     [SelectionController::class, 'store']);
@@ -21,5 +36,4 @@ Route::prefix('federations')->group(function () {
 });
 
 Route::get('clubs', [ClubController::class, 'index']);
-
 Route::get('players/{slug}', [PlayerController::class, 'show']);
