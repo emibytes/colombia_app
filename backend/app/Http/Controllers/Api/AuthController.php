@@ -58,6 +58,13 @@ class AuthController extends Controller
         return response()->json(['user' => $this->userData($request->user())]);
     }
 
+    public function acceptConsent(Request $request): JsonResponse
+    {
+        $request->user()->update(['data_treatment_accepted_at' => now()]);
+
+        return response()->json(['message' => 'Consentimiento registrado.']);
+    }
+
     private function userData(User $user): array
     {
         return [

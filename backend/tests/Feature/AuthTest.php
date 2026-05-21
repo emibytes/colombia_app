@@ -122,4 +122,24 @@ class AuthTest extends TestCase
     {
         $this->getJson('/api/auth/me')->assertStatus(401);
     }
+
+    public function test_accept_consent_stores_timestamp(): void
+    {
+        $user  = User::factory()->withoutConsent()->create();
+        $token = $user->createToken('api')->plainTextToken;
+
+        $this->assertNull($user->data_treatment_accepted_at);
+
+        $this->withToken($token)
+             ->postJson('/api/auth/accept-consent')
+             ->assertOk()
+             ->assertJson(['message' => 'Consentimiento registrado.']);
+
+        $this->assertNotNull($user->fresh()->data_treatment_accepted_at);
+    }
+
+    public function test_accept_consent_requires_authentication(): void
+    {
+        $this->postJson('/api/auth/accept-consent')->assertUnauthorized();
+    }
 }
