@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(high-end-visual-design)",
+      "Skill(high-end-visual-design:*)",
+      "WebFetch(domain:emibytes.com)",
+      "Bash(npm --version)",
+      "Bash(php --version)",
+      "Bash(composer --version)",
+      "Bash(Remove-Item -Recurse -Force \"C:\\\\xampp\\\\htdocs\\\\colombia_app\\\\config\", \"C:\\\\xampp\\\\htdocs\\\\colombia_app\\\\api\", \"C:\\\\xampp\\\\htdocs\\\\colombia_app\\\\assets\", \"C:\\\\xampp\\\\htdocs\\\\colombia_app\\\\setup.sql\" -ErrorAction SilentlyContinue)",
+      "Bash(Write-Host \"Limpieza OK\")",
+      "Bash(composer create-project *)",
+      "Bash(npm install *)",
+      "Bash(php artisan *)",
+      "Bash(mysql -u root -e \"CREATE DATABASE IF NOT EXISTS colombia_mundialista CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\")",
+      "Bash(/c/xampp/mysql/bin/mysql -u root -e \"CREATE DATABASE IF NOT EXISTS colombia_mundialista CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;\")",
+      "Bash(npm run *)",
+      "Bash(npx next *)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(php -l /c/xampp/htdocs/colombia_app/backend/app/Models/Selection.php)",
+      "Bash(php -l /c/xampp/htdocs/colombia_app/backend/app/Models/Vote.php)",
+      "Bash(php -l /c/xampp/htdocs/colombia_app/backend/app/Http/Requests/StoreSelectionRequest.php)",
+      "Bash(php -l /c/xampp/htdocs/colombia_app/backend/app/Http/Controllers/Api/SelectionController.php)",
+      "Bash(php -l /c/xampp/htdocs/colombia_app/backend/routes/api.php)"
+    ]
+  }
+}
