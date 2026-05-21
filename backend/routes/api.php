@@ -37,3 +37,9 @@ Route::prefix('federations')->group(function () {
 
 Route::get('clubs', [ClubController::class, 'index']);
 Route::get('players/{slug}', [PlayerController::class, 'show']);
+
+// Admin — requires auth + admin role
+Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
+    Route::apiResource('players', \App\Http\Controllers\Admin\PlayerController::class);
+    Route::apiResource('clubs',   \App\Http\Controllers\Admin\ClubController::class);
+});
