@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+/* ── Design Tokens ───────────────────────────────────── */
+:root {
+  --yellow:  #FCD116;
+  --blue:    #003087;
+  --red:     #CE1126;
+  --dark:    #05080F;
+  --card:    #0C1018;
+  --card2:   #111620;
+  --border:  rgba(252, 209, 22, 0.1);
+  --border2: rgba(252, 209, 22, 0.25);
+  --muted:   #6B7280;
+  --text:    #F0EDE8;
+  --ease:    cubic-bezier(0.32, 0.72, 0, 1);
+  --spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Base ────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--dark);
+  color: var(--text);
+  font-family: var(--font-jakarta), system-ui, sans-serif;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Noise overlay (GPU-safe, fixed) ─────────────────── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  background-size: 192px 192px;
+  opacity: 0.6;
+}
+
+/* ── Scrollbar ───────────────────────────────────────── */
+::-webkit-scrollbar       { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 999px; }
+
+/* ── Selection color ─────────────────────────────────── */
+::selection { background: rgba(252, 209, 22, 0.25); color: #fff; }
+
+/* ── Focus ring ──────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--yellow);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Avatar gradients by position group ──────────────── */
+.avatar-GK  { background: linear-gradient(135deg, #F7971E, #FFD200); }
+.avatar-DEF { background: linear-gradient(135deg, #003087, #1565C0); }
+.avatar-MID { background: linear-gradient(135deg, #0D9488, #059669); }
+.avatar-FWD { background: linear-gradient(135deg, #CE1126, #FF4500); }
+
+/* ── Position badge colors ───────────────────────────── */
+.badge-GK  { background: rgba(247,151,30,0.15); color: #F7971E; }
+.badge-DEF { background: rgba(0,48,135,0.2);    color: #6B9FFF; }
+.badge-MID { background: rgba(13,148,136,0.15); color: #2DD4BF; }
+.badge-FWD { background: rgba(206,17,38,0.2);   color: #FF6B6B; }
+
+/* ── Ripple ──────────────────────────────────────────── */
+@keyframes ripple {
+  to { transform: scale(4); opacity: 0; }
+}
+.ripple-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(252, 209, 22, 0.3);
+  transform: scale(0);
+  animation: ripple 0.6s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  pointer-events: none;
+}
+
+/* ── Confetti ────────────────────────────────────────── */
+@keyframes confetti-fall {
+  0%   { transform: translateY(-40px) rotate(0deg);   opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* ── Goal pop ────────────────────────────────────────── */
+@keyframes goal-pop {
+  0%   { transform: scale(0.3) rotate(-12deg); opacity: 0; }
+  60%  { transform: scale(1.08) rotate(2deg);  opacity: 1; }
+  100% { transform: scale(1) rotate(0deg);     opacity: 1; }
+}
+
+/* ── Shimmer ─────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+/* ── Pulse glow ──────────────────────────────────────── */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 16px rgba(252,209,22,0.15); }
+  50%       { box-shadow: 0 0 32px rgba(252,209,22,0.35); }
+}
