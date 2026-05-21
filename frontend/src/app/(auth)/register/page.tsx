@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { register, oauthRedirectUrl } from "@/lib/api";
@@ -8,6 +8,11 @@ import { useAuthStore } from "@/stores/authStore";
 export default function RegisterPage() {
   const router  = useRouter();
   const setAuth = useAuthStore((s) => s.setAuth);
+  const token   = useAuthStore((s) => s.token);
+
+  useEffect(() => {
+    if (token) router.replace("/");
+  }, [token, router]);
 
   const [form, setForm] = useState({
     name: "", email: "", password: "", password_confirmation: "",
