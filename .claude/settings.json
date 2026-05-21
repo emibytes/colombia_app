@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc --noEmit *)",
+      "Bash(/d/xampp/php/php.exe artisan test *)",
+      "Bash(claude plugin list *)"
+    ]
+  }
+}
