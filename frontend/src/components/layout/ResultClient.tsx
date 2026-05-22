@@ -110,58 +110,86 @@ export default function ResultClient() {
         </motion.div>
       </div>
 
-      {/* Share capture canvas */}
-      <div className="max-w-screen-xl mx-auto px-4 mb-4">
-        <div
-          ref={captureRef}
-          className="rounded-[2rem] overflow-hidden"
-          style={{ background: "#07090E", border: "1px solid rgba(255,255,255,0.07)" }}
-        >
-          {/* Branded header */}
-          <div className="relative flex items-center justify-between px-6 py-4 overflow-hidden">
-            {/* Tricolor bar */}
-            <div className="absolute bottom-0 left-0 right-0 h-[3px] flex">
-              <div className="flex-1 bg-[var(--yellow)]" />
-              <div className="flex-1 bg-[var(--blue)]" />
-              <div className="flex-1 bg-[var(--red)]" />
-            </div>
-            <div>
-              <p className="font-display text-[11px] tracking-[0.22em] text-[var(--muted)] uppercase">Mi Selección</p>
-              <p className="font-display text-xl leading-tight text-white">COLOMBIA <span className="text-[var(--yellow)]">2026</span></p>
-            </div>
-            <div className="text-right">
-              <p className="text-[10px] tracking-[0.15em] text-[var(--muted)] uppercase">Mundial</p>
-              <p className="font-display text-base text-[var(--yellow)]">FIFA WC 2026</p>
-            </div>
-          </div>
-
-          {/* Cards grid — always 2 cols inside the capture */}
-          <div className="grid grid-cols-2 gap-3 px-4 pb-4">
-            <SquadCard playerIds={selectedPlayers} playersMap={playersMap} />
-            <LineupPreviewCard
-              formation={formation}
-              placedMap={placedMap}
-              playersMap={playersMap}
-              hasLineup={hasLineup}
-            />
-          </div>
-
-          {/* Branded footer */}
-          <div className="relative flex items-center justify-between px-6 py-3 overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-[3px] flex">
-              <div className="flex-1 bg-[var(--yellow)]" />
-              <div className="flex-1 bg-[var(--blue)]" />
-              <div className="flex-1 bg-[var(--red)]" />
-            </div>
-            <p className="text-[10px] text-[var(--muted)] tracking-wide">seleccion.emibytes.com</p>
-            <p className="text-[10px] text-[var(--yellow)] font-semibold tracking-wide">#MiSeleccionColombia</p>
-          </div>
-        </div>
+      {/* Visible squad + formation grid */}
+      <div className="max-w-screen-xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <SquadCard playerIds={selectedPlayers} playersMap={playersMap} />
+        <LineupPreviewCard
+          formation={formation}
+          placedMap={placedMap}
+          playersMap={playersMap}
+          hasLineup={hasLineup}
+        />
       </div>
 
-      {/* Share button — prominent, right below capture */}
+      {/* Share button */}
       <div className="max-w-screen-xl mx-auto px-4 mb-10 flex justify-center">
         <ShareImageButton captureRef={captureRef} />
+      </div>
+
+      {/* Off-screen wrapper — captureRef has no position styling so html-to-image clones it at full 960px width */}
+      <div aria-hidden="true" style={{ position: "absolute", top: 0, left: "-9999px", pointerEvents: "none" }}>
+      <div
+        ref={captureRef}
+        style={{
+          width: "960px",
+          background: "#07090E",
+          borderRadius: "32px",
+          overflow: "hidden",
+          border: "1px solid rgba(255,255,255,0.07)",
+        }}
+      >
+        {/* Header */}
+        <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 28px 22px" }}>
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 3, display: "flex" }}>
+            <div style={{ flex: 1, background: "#FCD116" }} />
+            <div style={{ flex: 1, background: "#003087" }} />
+            <div style={{ flex: 1, background: "#CE1126" }} />
+          </div>
+          <div>
+            <p style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 11, letterSpacing: "0.22em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", margin: 0 }}>Mi Selección</p>
+            <p style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 28, lineHeight: 1.1, color: "white", margin: 0 }}>
+              COLOMBIA <span style={{ color: "#FCD116" }}>2026</span>
+            </p>
+          </div>
+          <div style={{ textAlign: "right" }}>
+            <p style={{ fontSize: 10, letterSpacing: "0.15em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", margin: 0 }}>Mundial</p>
+            <p style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 20, color: "#FCD116", margin: 0 }}>FIFA WC 2026</p>
+          </div>
+        </div>
+
+        {/* Cards — always 2 cols */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, padding: "0 16px 16px" }}>
+          <SquadCard playerIds={selectedPlayers} playersMap={playersMap} />
+          <LineupPreviewCard
+            formation={formation}
+            placedMap={placedMap}
+            playersMap={playersMap}
+            hasLineup={hasLineup}
+          />
+        </div>
+
+        {/* Footer */}
+        <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 28px 16px" }}>
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, display: "flex" }}>
+            <div style={{ flex: 1, background: "#FCD116" }} />
+            <div style={{ flex: 1, background: "#003087" }} />
+            <div style={{ flex: 1, background: "#CE1126" }} />
+          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/emibytes-logo.png" alt="emibytes" style={{ height: 22, width: "auto" }} />
+          <div style={{ textAlign: "center" }}>
+            <p style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", letterSpacing: "0.12em", textTransform: "uppercase", margin: "0 0 2px" }}>
+              Elige tu selección en
+            </p>
+            <p style={{ fontSize: 13, color: "#FCD116", fontWeight: 700, letterSpacing: "0.04em", margin: 0 }}>
+              miseleccion.emibytes.com
+            </p>
+          </div>
+          <p style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", fontWeight: 600, letterSpacing: "0.1em", margin: 0 }}>
+            #MiSeleccionColombia
+          </p>
+        </div>
+      </div>
       </div>
 
       {/* Community stats */}
