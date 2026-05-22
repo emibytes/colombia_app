@@ -10,6 +10,8 @@ class Selection extends Model
 
     protected $fillable = ['session_id', 'user_id', 'squad_players', 'starting_eleven', 'formation', 'share_token'];
 
+    protected $hidden = ['share_token'];
+
     protected $casts = [
         'squad_players'   => 'array',
         'starting_eleven' => 'array',

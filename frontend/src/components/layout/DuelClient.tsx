@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { FORMATIONS } from "@/lib/formations";
-import { SharedSelectionResponse } from "@/types";
+import { SharedSelectionResponse, Player } from "@/types";
 import { useSelectionStore } from "@/stores/selectionStore";
 import PlayerAvatar from "@/components/ui/PlayerAvatar";
 import FieldSVG from "@/components/field/FieldSVG";
@@ -129,8 +129,7 @@ export default function DuelClient({ shared }: Props) {
                   <FieldSVG />
                   {sharedFormationDef.positions.map((pos) => {
                     const playerId = sharedPlacedMap[pos.slot];
-                    // shared.players uses number keys but Record<number, SharedPlayer> access
-                    const player   = playerId ? (shared.players[playerId] as any) : undefined;
+                    const player = playerId ? (shared.players[playerId] as unknown as Player) : undefined;
                     return (
                       <FieldSpot
                         key={pos.slot}

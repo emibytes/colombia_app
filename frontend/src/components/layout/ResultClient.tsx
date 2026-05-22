@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const EASE_OUT = [0.32, 0.72, 0, 1] as [number, number, number, number];
 import Link from "next/link";
@@ -30,7 +30,9 @@ export default function ResultClient() {
   const [copied,     setCopied]     = useState(false);
 
   const formationDef  = FORMATIONS[formation];
-  const startingEleven = Object.values(placedMap);
+  const startingEleven = formationDef.positions
+    .map((p) => placedMap[p.slot])
+    .filter((id): id is number => typeof id === "number");
   const hasLineup     = startingEleven.length === 11;
 
   const SQUAD_SIZE = 23;
