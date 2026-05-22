@@ -239,7 +239,7 @@ export default function ResultClient() {
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35, duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+          transition={{ delay: 0.35, duration: 0.6, ease: EASE_OUT }}
           className="max-w-screen-xl mx-auto px-4 mb-10"
         >
           <div className="bg-[rgba(252,209,22,0.04)] border border-[var(--border)] rounded-[2rem] p-1.5">
