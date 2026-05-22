@@ -1,16 +1,17 @@
 "use client";
 import { useRef } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle } from "@phosphor-icons/react";
+import { CheckCircle, Info } from "@phosphor-icons/react";
 import { Player } from "@/types";
 import { cn } from "@/lib/utils";
 import PlayerAvatar from "@/components/ui/PlayerAvatar";
 
 interface Props {
-  player:   Player;
-  selected: boolean;
-  disabled: boolean;
-  onToggle: (id: number) => void;
+  player:    Player;
+  selected:  boolean;
+  disabled:  boolean;
+  onToggle:  (id: number) => void;
+  onDetail?: (id: number) => void;
 }
 
 const BADGE_LABELS: Record<string, string> = {
@@ -20,13 +21,12 @@ const BADGE_LABELS: Record<string, string> = {
   FWD: "Delantero",
 };
 
-export default function PlayerCard({ player, selected, disabled, onToggle }: Props) {
+export default function PlayerCard({ player, selected, disabled, onToggle, onDetail }: Props) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   const handleClick = (e: React.MouseEvent) => {
     if (disabled && !selected) return;
 
-    // Ripple effect
     const card = cardRef.current;
     if (card) {
       const rect = card.getBoundingClientRect();
@@ -46,7 +46,6 @@ export default function PlayerCard({ player, selected, disabled, onToggle }: Pro
   };
 
   return (
-    /* Outer shell — Double-Bezel architecture */
     <motion.div
       ref={cardRef}
       onClick={handleClick}
@@ -62,7 +61,6 @@ export default function PlayerCard({ player, selected, disabled, onToggle }: Pro
         disabled && !selected ? "opacity-50 saturate-50 pointer-events-none" : ""
       )}
     >
-      {/* Radial glow on hover/selected */}
       <div
         className={cn(
           "absolute inset-0 z-0 pointer-events-none transition-opacity duration-350",
@@ -71,13 +69,9 @@ export default function PlayerCard({ player, selected, disabled, onToggle }: Pro
         )}
       />
 
-      {/* Inner core */}
       <div className="relative z-10 bg-[var(--card2)] rounded-[calc(1.5rem-3px)] overflow-hidden shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
-
-        {/* Avatar */}
         <PlayerAvatar name={player.name} group={player.group} size="lg" />
 
-        {/* Info */}
         <div className="px-3 pt-2.5 pb-3">
           <p className="font-heading font-bold text-[0.95rem] leading-tight text-white line-clamp-2">
             {player.name}
@@ -96,7 +90,7 @@ export default function PlayerCard({ player, selected, disabled, onToggle }: Pro
         </div>
       </div>
 
-      {/* Check badge */}
+      {/* Selected check badge */}
       <motion.div
         className="absolute top-2.5 right-2.5 z-20 text-[var(--yellow)] drop-shadow-[0_0_8px_rgba(252,209,22,0.6)]"
         initial={{ scale: 0, rotate: -45 }}
@@ -105,6 +99,17 @@ export default function PlayerCard({ player, selected, disabled, onToggle }: Pro
       >
         <CheckCircle size={22} weight="fill" />
       </motion.div>
+
+      {/* Info button — only rendered when onDetail is provided */}
+      {onDetail && (
+        <button
+          onClick={(e) => { e.stopPropagation(); onDetail(player.id); }}
+          className="absolute bottom-[4.5rem] right-2 z-20 p-1 rounded-full text-[var(--muted)] hover:text-white transition-colors duration-200"
+          aria-label="Ver detalles"
+        >
+          <Info size={14} weight="bold" />
+        </button>
+      )}
     </motion.div>
   );
 }

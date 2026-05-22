@@ -10,6 +10,7 @@ import { useSound } from "@/hooks/useSound";
 import { getColombiaPlayers } from "@/lib/api";
 import PlayerCard from "./PlayerCard";
 import GoalOverlay from "@/components/ui/GoalOverlay";
+import PlayerDetailModal from "./PlayerDetailModal";
 
 const SQUAD_SIZE = 23;
 const FILTERS = ["ALL", "GK", "DEF", "MID", "FWD"] as const;
@@ -22,6 +23,7 @@ export default function SelectionClient() {
   const [search, setSearch]     = useState("");
   const [showGoal, setShowGoal] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [detailId, setDetailId] = useState<number | null>(null);
 
   useEffect(() => {
     getColombiaPlayers().then(setPlayers).catch(() => null);
@@ -196,6 +198,7 @@ export default function SelectionClient() {
                     selected={selectedPlayers.includes(p.id)}
                     disabled={count >= SQUAD_SIZE && !selectedPlayers.includes(p.id)}
                     onToggle={handleToggle}
+                    onDetail={setDetailId}
                   />
                 </motion.div>
               ))}
@@ -256,6 +259,13 @@ export default function SelectionClient() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <PlayerDetailModal
+        player={detailId !== null ? players.find((p) => p.id === detailId) ?? null : null}
+        selected={detailId !== null ? selectedPlayers.includes(detailId) : false}
+        onClose={() => setDetailId(null)}
+        onToggle={handleToggle}
+      />
 
       <GoalOverlay show={showGoal} text="¡23 ELEGIDOS!" onDone={() => setShowGoal(false)} />
     </div>
