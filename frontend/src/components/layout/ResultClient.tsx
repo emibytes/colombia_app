@@ -27,6 +27,14 @@ export default function ResultClient() {
   const startingEleven = Object.values(placedMap);
   const hasLineup     = startingEleven.length === 11;
 
+  const SQUAD_SIZE = 23;
+  const matchPct = (() => {
+    if (!stats || stats.top_squad.length < SQUAD_SIZE) return null;
+    const topIds = new Set(stats.top_squad.slice(0, SQUAD_SIZE).map((s) => s.id));
+    const matchCount = selectedPlayers.filter((id) => topIds.has(id)).length;
+    return Math.round((matchCount / SQUAD_SIZE) * 100);
+  })();
+
   useEffect(() => {
     getStats().then(setStats).catch(() => null);
   }, []);
@@ -216,6 +224,65 @@ export default function ResultClient() {
                     </div>
                   );
                 })}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {/* ── Match % ─────────────────────────────────── */}
+      {matchPct !== null && (
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+          className="max-w-screen-xl mx-auto px-4 mb-10"
+        >
+          <div className="bg-[rgba(252,209,22,0.04)] border border-[var(--border)] rounded-[2rem] p-1.5">
+            <div className="bg-[var(--card2)] rounded-[calc(2rem-5px)] p-5 flex flex-col sm:flex-row items-center gap-6">
+              {/* Gauge */}
+              <div className="relative w-28 h-28 shrink-0">
+                <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="10" />
+                  <motion.circle
+                    cx="50" cy="50" r="40" fill="none"
+                    stroke="url(#matchGrad)" strokeWidth="10"
+                    strokeLinecap="round"
+                    strokeDasharray={`${2 * Math.PI * 40}`}
+                    initial={{ strokeDashoffset: 2 * Math.PI * 40 }}
+                    animate={{ strokeDashoffset: 2 * Math.PI * 40 * (1 - matchPct / 100) }}
+                    transition={{ delay: 0.5, duration: 1.2, ease: [0.32, 0.72, 0, 1] }}
+                  />
+                  <defs>
+                    <linearGradient id="matchGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="var(--yellow)" />
+                      <stop offset="100%" stopColor="var(--red)" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="font-display text-2xl text-[var(--yellow)]">{matchPct}%</span>
+                </div>
+              </div>
+              {/* Text */}
+              <div>
+                <h2 className="font-display text-2xl text-[var(--yellow)] tracking-wide mb-1">
+                  COINCIDENCIA CON LA COMUNIDAD
+                </h2>
+                <p className="text-[var(--muted)] text-sm leading-relaxed">
+                  {matchPct >= 80
+                    ? "¡Eres un experto! Tu selección coincide casi perfectamente con la de la comunidad."
+                    : matchPct >= 60
+                    ? "Buena selección. Tienes buen ojo para el talento colombiano."
+                    : matchPct >= 40
+                    ? "Selección interesante. Tienes apuestas diferentes a la comunidad."
+                    : "¡Eres un selector atrevido! Tu selección es muy original."}
+                </p>
+                <p className="text-[10px] text-[var(--muted)] mt-2 uppercase tracking-widest">
+                  {selectedPlayers.filter((id) =>
+                    stats!.top_squad.slice(0, SQUAD_SIZE).some((s) => s.id === id)
+                  ).length} de {SQUAD_SIZE} jugadores en común
+                </p>
               </div>
             </div>
           </div>

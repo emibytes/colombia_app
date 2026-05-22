@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "@phosphor-icons/react";
+import CountdownWidget from "@/components/ui/CountdownWidget";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -37,7 +38,7 @@ export default function LandingPage() {
         {/* Main title */}
         <motion.h1
           variants={fadeUp}
-          className="font-display text-[clamp(2.6rem,12vw,11rem)] leading-[0.88] mt-6 tracking-wide text-center"
+          className="font-display text-[clamp(2.6rem,12vw,11rem)] xl:text-[clamp(2.6rem,9.6vw,8.8rem)] leading-[0.88] mt-6 tracking-wide text-center"
         >
           <span className="text-[var(--yellow)]">MI</span>{" "}
           <span className="text-white">SELECCIÓN</span>
@@ -83,6 +84,14 @@ export default function LandingPage() {
           <div className="flex-[2] bg-[var(--yellow)]" />
           <div className="flex-1 bg-[var(--blue)]" />
           <div className="flex-1 bg-[var(--red)]" />
+        </motion.div>
+
+        {/* Countdown */}
+        <motion.div variants={fadeUp} className="mt-10 flex flex-col items-center gap-2">
+          <p className="text-[9px] uppercase tracking-[0.2em] text-[var(--muted)] font-semibold">
+            Faltan para el Mundial 2026
+          </p>
+          <CountdownWidget />
         </motion.div>
 
         {/* Stats bar */}
