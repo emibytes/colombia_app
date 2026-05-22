@@ -25,7 +25,9 @@ export default function ResultClient() {
   const captureRef = useRef<HTMLDivElement>(null);
   const [status,   setStatus]   = useState<SaveStatus>("idle");
   const [stats,    setStats]    = useState<StatsResponse | null>(null);
-  const [showGoal, setShowGoal] = useState(false);
+  const [showGoal,   setShowGoal]   = useState(false);
+  const [shareToken, setShareToken] = useState<string | null>(null);
+  const [copied,     setCopied]     = useState(false);
 
   const formationDef  = FORMATIONS[formation];
   const startingEleven = Object.values(placedMap);
@@ -49,13 +51,14 @@ export default function ResultClient() {
 
     setStatus("saving");
     try {
-      await saveSelection({
+      const result = await saveSelection({
         session_id:      getSessionId(),
         squad_players:   selectedPlayers,
         starting_eleven: startingEleven,
         formation,
       });
       setStatus("saved");
+      if (result.share_token) setShareToken(result.share_token);
       sound.victory();
       setShowGoal(true);
       getStats().then(setStats).catch(() => null);
@@ -428,6 +431,26 @@ export default function ResultClient() {
         </motion.button>
 
         <ShareImageButton captureRef={captureRef} />
+
+        {shareToken && (
+          <motion.button
+            onClick={async () => {
+              const url = `${window.location.origin}/duelo/${shareToken}`;
+              try {
+                await navigator.clipboard.writeText(url);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2500);
+              } catch {
+                window.prompt("Copia este enlace:", url);
+              }
+            }}
+            className="flex items-center gap-2.5 border border-[var(--blue)]/60 text-[var(--blue)] hover:border-[var(--blue)] hover:text-white font-semibold px-6 py-3.5 rounded-full text-sm transition-all duration-300"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.97 }}
+          >
+            {copied ? "¡Enlace copiado!" : "Retar a un amigo"}
+          </motion.button>
+        )}
 
         <Link href="/once">
           <button className="flex items-center gap-2 border border-[var(--border)] text-[var(--muted)] hover:text-white hover:border-[var(--border2)] font-semibold px-6 py-3.5 rounded-full text-sm transition-all duration-300">

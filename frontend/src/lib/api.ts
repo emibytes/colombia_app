@@ -4,7 +4,7 @@ import {
   LoginPayload,
   RegisterPayload,
 } from "@/types/auth";
-import { Player, SaveSelectionPayload, StatsResponse } from "@/types";
+import { Player, SaveSelectionPayload, StatsResponse, SharedSelectionResponse } from "@/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api";
 
@@ -58,12 +58,17 @@ export function oauthRedirectUrl(provider: "google" | "facebook"): string {
 
 export async function saveSelection(payload: SaveSelectionPayload) {
   const { data } = await http.post("/selections", payload);
-  return data as { ok: boolean; message: string; id?: number };
+  return data as { ok: boolean; message: string; id?: number; share_token?: string };
 }
 
 export async function getStats(): Promise<StatsResponse> {
   const { data } = await http.get("/selections/stats");
   return data as StatsResponse;
+}
+
+export async function getSharedSelection(token: string): Promise<SharedSelectionResponse> {
+  const { data } = await http.get<SharedSelectionResponse>(`/selections/share/${token}`);
+  return data;
 }
 
 // ─── Players ──────────────────────────────────────────────────────────────────

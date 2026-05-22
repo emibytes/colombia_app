@@ -51,3 +51,22 @@ export interface StatsResponse {
   formation_distribution: Array<{ formation: string; count: number }>;
   dt_squad:               number[] | null;
 }
+
+export interface SharedPlayer {
+  id:       number;
+  name:     string;
+  position: string;
+  group:    PlayerGroup;
+  age:      number;
+  club:     string;
+  country:  string;
+}
+
+export interface SharedSelectionResponse {
+  ok:              boolean;
+  share_token:     string;
+  squad_players:   number[];
+  starting_eleven: number[] | null;
+  formation:       FormationName;
+  players:         Record<number, SharedPlayer>;
+}
