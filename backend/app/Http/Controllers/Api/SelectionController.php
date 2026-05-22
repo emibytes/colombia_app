@@ -106,11 +106,28 @@ class SelectionController extends Controller
                 'votes' => $row->votes,
             ]);
 
+        $formationDist = Selection::selectRaw('formation, COUNT(*) as count')
+            ->groupBy('formation')
+            ->orderByDesc('count')
+            ->get()
+            ->map(fn ($row) => [
+                'formation' => $row->formation,
+                'count'     => (int) $row->count,
+            ]);
+
+        $raw     = config('dt_selection.squad_player_ids', '');
+        $dtIds   = ($raw !== '' && $raw !== null)
+            ? array_map('intval', explode(',', (string) $raw))
+            : [];
+        $dtSquad = !empty($dtIds) ? $dtIds : null;
+
         return response()->json([
-            'ok'               => true,
-            'total_selections' => $total,
-            'top_squad'        => $topSquad,
-            'top_eleven'       => $topEleven,
+            'ok'                     => true,
+            'total_selections'       => $total,
+            'top_squad'              => $topSquad,
+            'top_eleven'             => $topEleven,
+            'formation_distribution' => $formationDist,
+            'dt_squad'               => $dtSquad,
         ]);
     }
 }
