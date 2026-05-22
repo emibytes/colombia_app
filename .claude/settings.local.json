@@ -24,7 +24,14 @@
       "Bash(php -l /c/xampp/htdocs/colombia_app/backend/routes/api.php)",
       "Bash(php -r ' *)",
       "Bash(git add *)",
-      "Bash(git checkout *)"
+      "Bash(git checkout *)",
+      "Bash(git commit *)",
+      "Bash(git status *)",
+      "Bash(git log *)",
+      "Bash(/d/xampp/php/php.exe *)",
+      "Bash(/d/xampp/php/php.exe artisan *)",
+      "Bash(composer require *)",
+      "Bash(curl *)"
     ]
   }
 }

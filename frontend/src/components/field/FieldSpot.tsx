@@ -76,17 +76,21 @@ export default function FieldSpot({ pos, player, active, onSpotClick, onRemove }
           </p>
         </div>
 
-        {/* Remove button */}
+        {/* Remove button — div to avoid button-inside-button (invalid HTML) */}
         {filled && (
-          <motion.button
-            className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[var(--red)] text-white flex items-center justify-center z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          <motion.div
+            role="button"
+            tabIndex={0}
+            aria-label="Quitar jugador"
+            className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[var(--red)] text-white flex items-center justify-center z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer"
             onClick={(e) => { e.stopPropagation(); onRemove(pos.slot); }}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.stopPropagation(); onRemove(pos.slot); } }}
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             whileTap={{ scale: 0.8 }}
           >
             <X size={8} weight="bold" />
-          </motion.button>
+          </motion.div>
         )}
       </motion.button>
     </div>

@@ -105,3 +105,52 @@ body::after {
   0%, 100% { box-shadow: 0 0 16px rgba(252,209,22,0.15); }
   50%       { box-shadow: 0 0 32px rgba(252,209,22,0.35); }
 }
+
+/* ── Auth ambient orbs ───────────────────────────────── */
+.auth-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.auth-orb-yellow {
+  width: 520px; height: 520px;
+  background: radial-gradient(circle, #FCD116 0%, transparent 70%);
+  top: -15%; left: -20%;
+  opacity: 0.07;
+  animation: auth-orb-drift 11s ease-in-out infinite;
+}
+.auth-orb-blue {
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, #003087 0%, transparent 70%);
+  bottom: -10%; right: -15%;
+  opacity: 0.10;
+  animation: auth-orb-drift 14s ease-in-out infinite reverse;
+}
+.auth-orb-red {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, #CE1126 0%, transparent 70%);
+  top: 50%; left: 30%;
+  opacity: 0.05;
+  animation: auth-orb-drift 9s ease-in-out infinite;
+  animation-delay: -4s;
+}
+
+@keyframes auth-orb-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(28px, -22px) scale(1.07); }
+  66%       { transform: translate(-18px, 18px) scale(0.96); }
+}
+
+/* ── Spinner (auth loading) ──────────────────────────── */
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+.btn-spinner {
+  display: inline-block;
+  width: 14px; height: 14px;
+  border: 2px solid rgba(5,8,15,0.25);
+  border-top-color: #05080F;
+  border-radius: 50%;
+  animation: btn-spin 0.75s linear infinite;
+}

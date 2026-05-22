@@ -11,7 +11,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ConfederationSeeder::class,
             ColombiaSeeder::class,
-            ClubFederationsSeeder::class, // añade 14 federaciones y vincula los clubes
+            ClubFederationsSeeder::class,
+            AdminUserSeeder::class,
         ]);
     }
 }

@@ -37,7 +37,7 @@ export default function LandingPage() {
         {/* Main title */}
         <motion.h1
           variants={fadeUp}
-          className="font-display text-[clamp(4.5rem,14vw,11rem)] leading-[0.88] mt-6 tracking-wide"
+          className="font-display text-[clamp(2.6rem,12vw,11rem)] leading-[0.88] mt-6 tracking-wide text-center"
         >
           <span className="text-[var(--yellow)]">MI</span>{" "}
           <span className="text-white">SELECCIÓN</span>
@@ -48,7 +48,7 @@ export default function LandingPage() {
         {/* Sub */}
         <motion.p
           variants={fadeUp}
-          className="mt-5 text-[var(--muted)] text-lg leading-relaxed max-w-md"
+          className="mt-5 text-[var(--muted)] text-base md:text-lg leading-relaxed max-w-md"
         >
           Elige tus <strong className="text-white">23 jugadores</strong> de la prelista
           oficial y arma tu <strong className="text-white">11 ideal</strong>.
