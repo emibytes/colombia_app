@@ -69,4 +69,54 @@ export const adminApi = {
     http
       .get<{ data: AdminFederation[] }>("/federations")
       .then((r) => r.data.data),
+
+  // Confederations admin CRUD
+  getConfederations: () =>
+    http.get<AdminConfederation[]>("/admin/confederations").then((r) => r.data),
+  createConfederation: (data: Partial<AdminConfederation>) =>
+    http.post<AdminConfederation>("/admin/confederations", data).then((r) => r.data),
+  updateConfederation: (id: number, data: Partial<AdminConfederation>) =>
+    http.put<AdminConfederation>(`/admin/confederations/${id}`, data).then((r) => r.data),
+  deleteConfederation: (id: number) =>
+    http.delete(`/admin/confederations/${id}`),
+
+  // Federations admin CRUD
+  getAdminFederations: () =>
+    http.get<AdminFederationRow[]>("/admin/federations").then((r) => r.data),
+  createFederation: (data: Partial<AdminFederationRow>) =>
+    http.post<AdminFederationRow>("/admin/federations", data).then((r) => r.data),
+  updateFederation: (id: number, data: Partial<AdminFederationRow>) =>
+    http.put<AdminFederationRow>(`/admin/federations/${id}`, data).then((r) => r.data),
+  deleteFederation: (id: number) =>
+    http.delete(`/admin/federations/${id}`),
 };
+
+// ── New admin types ────────────────────────────────────────
+
+export interface AdminConfederation {
+  id:                   number;
+  name:                 string;
+  full_name:            string;
+  region:               string;
+  president:            string | null;
+  headquarters_city:    string | null;
+  headquarters_country: string | null;
+  founded_year:         number | null;
+  member_nations:       number | null;
+  federations_count?:   number;
+}
+
+export interface AdminFederationRow {
+  id:                 number;
+  confederation_id:   number;
+  confederation_name: string | null;
+  name:               string;
+  short_name:         string;
+  country:            string;
+  country_code:       string;
+  continent:          string;
+  fifa_ranking:       number | null;
+  qualified_wc_2026:  boolean;
+  head_coach:         string | null;
+  founded_year:       number | null;
+}

@@ -7,15 +7,19 @@ import {
   SquaresFour,
   UsersThree,
   Buildings,
+  Flag,
+  Globe,
   SignOut,
   ArrowLeft,
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { href: "/admin",         label: "Dashboard", Icon: SquaresFour },
-  { href: "/admin/players", label: "Jugadores", Icon: UsersThree  },
-  { href: "/admin/clubs",   label: "Clubes",    Icon: Buildings   },
+  { href: "/admin",                label: "Dashboard",       Icon: SquaresFour },
+  { href: "/admin/players",        label: "Jugadores",       Icon: UsersThree  },
+  { href: "/admin/clubs",          label: "Clubes",          Icon: Buildings   },
+  { href: "/admin/federations",    label: "Federaciones",    Icon: Flag        },
+  { href: "/admin/confederations", label: "Confederaciones", Icon: Globe       },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

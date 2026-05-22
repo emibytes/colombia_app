@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { UsersThree, Buildings, ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
+import { UsersThree, Buildings, Flag, Globe, ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 
 const SECTIONS = [
   {
@@ -19,6 +19,24 @@ const SECTIONS = [
     accent:  "from-[rgba(252,209,22,0.08)] to-[rgba(206,17,38,0.06)]",
     border:  "border-[rgba(252,209,22,0.15)]",
     iconClr: "text-[#FCD116]",
+  },
+  {
+    href:    "/admin/federations",
+    label:   "Federaciones",
+    desc:    "Gestionar selecciones y datos FIFA",
+    Icon:    Flag,
+    accent:  "from-[rgba(13,148,136,0.12)] to-[rgba(0,48,135,0.06)]",
+    border:  "border-[rgba(13,148,136,0.25)]",
+    iconClr: "text-[#2DD4BF]",
+  },
+  {
+    href:    "/admin/confederations",
+    label:   "Confederaciones",
+    desc:    "Gestionar CONMEBOL, UEFA y otras",
+    Icon:    Globe,
+    accent:  "from-[rgba(206,17,38,0.1)] to-[rgba(252,209,22,0.05)]",
+    border:  "border-[rgba(206,17,38,0.25)]",
+    iconClr: "text-[#FF6B6B]",
   },
 ];
 
