@@ -4,6 +4,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, PencilSimple, Trash, X } from "@phosphor-icons/react";
 import { adminApi, AdminFederationRow, AdminConfederation } from "@/lib/adminApi";
 
+const FIELD_LABELS: Record<string, string> = {
+  name:              "Nombre",
+  short_name:        "Nombre corto",
+  country:           "País",
+  country_code:      "Código de país",
+  continent:         "Continente",
+  head_coach:        "Director técnico",
+  fifa_ranking:      "Ranking FIFA",
+  founded_year:      "Año de fundación",
+};
+
 const INPUT_CLS =
   "w-full bg-[#111620] border border-[rgba(252,209,22,0.1)] rounded-xl px-4 py-2.5 text-sm text-[#F0EDE8] placeholder-[#6B7280]/40 focus:outline-none focus:border-[rgba(252,209,22,0.5)] focus:shadow-[0_0_0_3px_rgba(252,209,22,0.05)] transition-all duration-300";
 
@@ -171,14 +182,14 @@ export default function AdminFederationsPage() {
               </select>
             </FormField>
             {(["name","short_name","country","country_code","continent","head_coach"] as const).map((key) => (
-              <FormField key={key} label={key.replace(/_/g, " ")}>
+              <FormField key={key} label={FIELD_LABELS[key]}>
                 <input type="text" value={(editing[key] as string | null) ?? ""}
                   onChange={(e) => setEditing({ ...editing, [key]: e.target.value || null })}
                   className={INPUT_CLS} />
               </FormField>
             ))}
             {(["fifa_ranking","founded_year"] as const).map((key) => (
-              <FormField key={key} label={key.replace(/_/g, " ")}>
+              <FormField key={key} label={FIELD_LABELS[key]}>
                 <input type="number" value={(editing[key] as number | null) ?? ""}
                   onChange={(e) => setEditing({ ...editing, [key]: e.target.value ? Number(e.target.value) : null })}
                   className={INPUT_CLS} />
@@ -205,14 +216,14 @@ export default function AdminFederationsPage() {
               </select>
             </FormField>
             {(["name","short_name","country","country_code","continent","head_coach"] as const).map((key) => (
-              <FormField key={key} label={`${key.replace(/_/g, " ")}${["name","short_name","country","country_code","continent"].includes(key) ? " *" : ""}`}>
+              <FormField key={key} label={`${FIELD_LABELS[key]}${["name","short_name","country","country_code","continent"].includes(key) ? " *" : ""}`}>
                 <input type="text" value={newForm[key]}
                   onChange={(e) => setNewForm({ ...newForm, [key]: e.target.value })}
                   className={INPUT_CLS} />
               </FormField>
             ))}
             {(["fifa_ranking","founded_year"] as const).map((key) => (
-              <FormField key={key} label={key.replace(/_/g, " ")}>
+              <FormField key={key} label={FIELD_LABELS[key]}>
                 <input type="number" value={newForm[key]}
                   onChange={(e) => setNewForm({ ...newForm, [key]: e.target.value })}
                   className={INPUT_CLS} />
