@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { ArrowCounterClockwise, FloppyDisk } from "@phosphor-icons/react";
+import { ArrowCounterClockwise, FloppyDisk, PencilSimple, UsersThree } from "@phosphor-icons/react";
 import { FORMATIONS } from "@/lib/formations";
 import { useSelectionStore } from "@/stores/selectionStore";
 import { useSound } from "@/hooks/useSound";
@@ -290,7 +290,7 @@ export default function ResultClient() {
       )}
 
       {/* ── Action buttons ──────────────────────────── */}
-      <div className="max-w-screen-xl mx-auto px-4 flex flex-wrap gap-3 justify-center">
+      <div className="max-w-screen-xl mx-auto px-4 mb-6 flex flex-wrap gap-3 justify-center">
         <motion.button
           onClick={handleSave}
           disabled={status === "saving" || status === "saved"}
@@ -312,12 +312,29 @@ export default function ResultClient() {
            : "Guardar mi selección"}
         </motion.button>
 
+        <Link href="/once">
+          <button className="flex items-center gap-2 border border-[var(--border)] text-[var(--muted)] hover:text-white hover:border-[var(--border2)] font-semibold px-6 py-3.5 rounded-full text-sm transition-all duration-300">
+            <PencilSimple size={16} weight="bold" />
+            Editar mi 11
+          </button>
+        </Link>
+
+        <Link href="/seleccion">
+          <button className="flex items-center gap-2 border border-[var(--border)] text-[var(--muted)] hover:text-white hover:border-[var(--border2)] font-semibold px-6 py-3.5 rounded-full text-sm transition-all duration-300">
+            <UsersThree size={16} weight="bold" />
+            Editar mis 23
+          </button>
+        </Link>
+      </div>
+
+      {/* Reset */}
+      <div className="max-w-screen-xl mx-auto px-4 flex justify-center pb-4">
         <button
           onClick={() => { resetAll(); window.location.href = "/seleccion"; }}
-          className="flex items-center gap-2 border border-[var(--border)] text-[var(--muted)] hover:text-white hover:border-[var(--border2)] font-semibold px-6 py-3.5 rounded-full text-sm transition-all duration-300"
+          className="flex items-center gap-1.5 text-xs text-[var(--muted)] hover:text-[var(--red)] transition-colors duration-200"
         >
-          <ArrowCounterClockwise size={16} weight="bold" />
-          Empezar de nuevo
+          <ArrowCounterClockwise size={13} weight="bold" />
+          Empezar de nuevo desde cero
         </button>
       </div>
 
