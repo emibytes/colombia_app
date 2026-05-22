@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+
+const EASE_OUT = [0.32, 0.72, 0, 1] as [number, number, number, number];
 import Link from "next/link";
 import { ArrowCounterClockwise, FloppyDisk, PencilSimple, UsersThree } from "@phosphor-icons/react";
 import { FORMATIONS } from "@/lib/formations";
@@ -82,7 +84,7 @@ export default function ResultClient() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+          transition={{ duration: 0.6, ease: EASE_OUT }}
         >
           <span className="inline-flex items-center gap-2 bg-[rgba(252,209,22,0.08)] border border-[var(--border2)] rounded-full px-4 py-1.5 text-[10px] uppercase tracking-[0.18em] font-semibold text-[var(--yellow)]">
             🇨🇴 Tu selección Colombia 2026
@@ -100,7 +102,7 @@ export default function ResultClient() {
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0  }}
-          transition={{ delay: 0.1, duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+          transition={{ delay: 0.1, duration: 0.6, ease: EASE_OUT }}
           className="bg-[rgba(252,209,22,0.04)] border border-[var(--border)] rounded-[2rem] p-1.5"
         >
           <div className="bg-[var(--card2)] rounded-[calc(2rem-5px)] p-5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
@@ -133,7 +135,7 @@ export default function ResultClient() {
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0  }}
-          transition={{ delay: 0.2, duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+          transition={{ delay: 0.2, duration: 0.6, ease: EASE_OUT }}
           className="bg-[rgba(252,209,22,0.04)] border border-[var(--border)] rounded-[2rem] p-1.5"
         >
           <div className="bg-[var(--card2)] rounded-[calc(2rem-5px)] p-5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
@@ -185,7 +187,7 @@ export default function ResultClient() {
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0  }}
-          transition={{ delay: 0.3, duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+          transition={{ delay: 0.3, duration: 0.6, ease: EASE_OUT }}
           className="max-w-screen-xl mx-auto px-4 mb-10"
         >
           <div className="bg-[rgba(252,209,22,0.04)] border border-[var(--border)] rounded-[2rem] p-1.5">
@@ -217,7 +219,7 @@ export default function ResultClient() {
                             className="h-full bg-gradient-to-r from-[var(--yellow)] to-[var(--red)] rounded-full"
                             initial={{ width: 0 }}
                             animate={{ width: `${pct}%` }}
-                            transition={{ delay: 0.4 + i * 0.05, duration: 0.8, ease: [0.32, 0.72, 0, 1] }}
+                            transition={{ delay: 0.4 + i * 0.05, duration: 0.8, ease: EASE_OUT }}
                           />
                         </div>
                       </div>
@@ -235,7 +237,7 @@ export default function ResultClient() {
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+          transition={{ delay: 0.4, duration: 0.6, ease: EASE_OUT }}
           className="max-w-screen-xl mx-auto px-4 mb-10"
         >
           <div className="bg-[rgba(252,209,22,0.04)] border border-[var(--border)] rounded-[2rem] p-1.5">
@@ -251,7 +253,7 @@ export default function ResultClient() {
                     strokeDasharray={`${2 * Math.PI * 40}`}
                     initial={{ strokeDashoffset: 2 * Math.PI * 40 }}
                     animate={{ strokeDashoffset: 2 * Math.PI * 40 * (1 - matchPct / 100) }}
-                    transition={{ delay: 0.5, duration: 1.2, ease: [0.32, 0.72, 0, 1] }}
+                    transition={{ delay: 0.5, duration: 1.2, ease: EASE_OUT }}
                   />
                   <defs>
                     <linearGradient id="matchGrad" x1="0%" y1="0%" x2="100%" y2="0%">

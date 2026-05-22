@@ -1,6 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
 
+const EASE_OUT = [0.32, 0.72, 0, 1] as [number, number, number, number];
+
 const BADGES = [
   { key: "GK",  label: "Portero",    cls: "avatar-GK",  delay: 0    },
   { key: "DEF", label: "Defensa",    cls: "avatar-DEF", delay: 0.5  },
@@ -14,7 +16,7 @@ const container = {
 };
 const item = {
   hidden:  { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.32, 0.72, 0, 1] } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE_OUT } },
 };
 
 export default function AuthVisualPanel() {
@@ -61,7 +63,7 @@ export default function AuthVisualPanel() {
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
+        transition={{ duration: 0.5, ease: EASE_OUT }}
       >
         <span className="font-[family-name:var(--font-bebas)] text-xl tracking-[0.35em] text-[#FCD116]">
           COL2026
@@ -122,7 +124,7 @@ export default function AuthVisualPanel() {
       <motion.div
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
-        transition={{ duration: 0.9, delay: 0.6, ease: [0.32, 0.72, 0, 1] }}
+        transition={{ duration: 0.9, delay: 0.6, ease: EASE_OUT }}
         className="flex gap-1 origin-left"
       >
         <div className="h-[3px] flex-[3] rounded-full bg-[#FCD116]" />

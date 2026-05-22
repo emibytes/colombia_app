@@ -7,13 +7,15 @@ import { WarningCircle } from "@phosphor-icons/react";
 import { login, oauthRedirectUrl } from "@/lib/api";
 import { useAuthStore } from "@/stores/authStore";
 
+const EASE_OUT = [0.32, 0.72, 0, 1] as [number, number, number, number];
+
 const stagger = {
   hidden:  {},
   visible: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
 };
 const fadeUp = {
   hidden:  { opacity: 0, y: 14 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.32, 0.72, 0, 1] } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE_OUT } },
 };
 
 const INPUT_CLS =
@@ -113,7 +115,7 @@ export default function LoginPage() {
               initial={{ opacity: 0, y: -6, height: 0 }}
               animate={{ opacity: 1, y: 0, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
+              transition={{ duration: 0.25, ease: EASE_OUT }}
               className="flex items-center gap-2 text-[#CE1126] text-sm overflow-hidden"
             >
               <WarningCircle size={16} weight="fill" className="flex-none" />

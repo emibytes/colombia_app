@@ -1,6 +1,8 @@
 "use client";
 import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+
+const EASE_OUT = [0.32, 0.72, 0, 1] as [number, number, number, number];
 import Link from "next/link";
 import { ArrowRight, SpeakerSlash, SpeakerHigh, MagnifyingGlass, X } from "@phosphor-icons/react";
 import { GROUP_LABELS } from "@/lib/players";
@@ -89,7 +91,7 @@ export default function SelectionClient() {
               <motion.div
                 className="h-full bg-gradient-to-r from-[var(--yellow)] to-[var(--red)] rounded-full"
                 style={{ width: `${pct}%` }}
-                transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
+                transition={{ duration: 0.4, ease: EASE_OUT }}
               />
             </div>
             <button
@@ -152,7 +154,7 @@ export default function SelectionClient() {
           className="mb-6"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+          transition={{ duration: 0.6, ease: EASE_OUT }}
         >
           <span className="inline-flex items-center gap-2 bg-[rgba(252,209,22,0.08)] border border-[var(--border2)] rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.18em] font-semibold text-[var(--yellow)]">
             Prelista oficial{players.length > 0 ? ` · ${players.length} jugadores` : ""}
@@ -191,7 +193,7 @@ export default function SelectionClient() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ delay: i * 0.03, duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
+                  transition={{ delay: i * 0.03, duration: 0.4, ease: EASE_OUT }}
                 >
                   <PlayerCard
                     player={p}
