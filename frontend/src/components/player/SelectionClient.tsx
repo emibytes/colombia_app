@@ -1,8 +1,6 @@
 "use client";
 import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-const EASE_OUT = [0.32, 0.72, 0, 1] as [number, number, number, number];
 import Link from "next/link";
 import { ArrowRight, SpeakerSlash, SpeakerHigh, MagnifyingGlass, X } from "@phosphor-icons/react";
 import { GROUP_LABELS } from "@/lib/players";
@@ -14,6 +12,7 @@ import PlayerCard from "./PlayerCard";
 import GoalOverlay from "@/components/ui/GoalOverlay";
 import PlayerDetailModal from "./PlayerDetailModal";
 
+const EASE_OUT = [0.32, 0.72, 0, 1] as [number, number, number, number];
 const SQUAD_SIZE = 23;
 const FILTERS = ["ALL", "GK", "DEF", "MID", "FWD"] as const;
 type Filter = (typeof FILTERS)[number];
@@ -49,18 +48,18 @@ export default function SelectionClient() {
   );
 
   const handleToggle = useCallback(
-    (id: number) => {
+    (id: number): boolean | void => {
       const isSelected = selectedPlayers.includes(id);
 
       if (isSelected) {
         togglePlayer(id);
         sound.deselect();
-        return;
+        return true; // successfully removed
       }
 
       if (count >= SQUAD_SIZE) {
         sound.limit();
-        return;
+        return false; // rejected
       }
 
       const added = togglePlayer(id);
@@ -71,7 +70,9 @@ export default function SelectionClient() {
         } else {
           sound.select();
         }
+        return true;
       }
+      return false;
     },
     [selectedPlayers, count, togglePlayer, sound]
   );

@@ -16,7 +16,7 @@ interface Props {
   player:   Player | null;
   selected: boolean;
   onClose:  () => void;
-  onToggle: (id: number) => void;
+  onToggle: (id: number) => boolean | void;
 }
 
 export default function PlayerDetailModal({ player, selected, onClose, onToggle }: Props) {
@@ -34,6 +34,9 @@ export default function PlayerDetailModal({ player, selected, onClose, onToggle 
           />
 
           <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="player-modal-title"
             className="fixed bottom-0 left-0 right-0 z-50 bg-[var(--card)] border-t border-[var(--border)] rounded-t-[2rem] max-h-[80dvh] overflow-y-auto"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
@@ -48,10 +51,11 @@ export default function PlayerDetailModal({ player, selected, onClose, onToggle 
               <div className="flex items-start gap-4 my-5">
                 <PlayerAvatar name={player.name} group={player.group} size="lg" />
                 <div className="flex-1 min-w-0">
-                  <h2 className="font-display text-2xl text-white leading-tight">{player.name}</h2>
+                  <h2 id="player-modal-title" className="font-display text-2xl text-white leading-tight">{player.name}</h2>
                   <p className="text-[var(--muted)] text-sm mt-0.5">{POSITION_FULL[player.group] ?? player.position}</p>
                 </div>
                 <button
+                  aria-label="Cerrar"
                   onClick={onClose}
                   className="p-2 text-[var(--muted)] hover:text-white transition-colors shrink-0"
                 >
@@ -74,7 +78,11 @@ export default function PlayerDetailModal({ player, selected, onClose, onToggle 
               </dl>
 
               <button
-                onClick={() => { onToggle(player.id); onClose(); }}
+                onClick={() => {
+                  const result = onToggle(player.id);
+                  // Close on: removing (selected=true) or successful add (result !== false)
+                  if (selected || result !== false) onClose();
+                }}
                 className={cn(
                   "w-full font-bold py-3.5 rounded-full text-sm transition-all duration-300",
                   selected
