@@ -44,8 +44,10 @@ export interface SaveSelectionPayload {
 }
 
 export interface StatsResponse {
-  ok:                boolean;
-  total_selections:  number;
-  top_squad:         Array<{ id: number; name: string; votes: number }>;
-  top_eleven:        Array<{ id: number; name: string; votes: number }>;
+  ok:                     boolean;
+  total_selections:       number;
+  top_squad:              Array<{ id: number; name: string; votes: number }>;
+  top_eleven:             Array<{ id: number; name: string; votes: number }>;
+  formation_distribution: Array<{ formation: string; count: number }>;
+  dt_squad:               number[] | null;
 }
