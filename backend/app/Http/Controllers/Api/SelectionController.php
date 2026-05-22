@@ -137,27 +137,29 @@ class SelectionController extends Controller
     {
         $total = Selection::count();
 
-        $topSquad = Vote::where('type', 'squad')
-            ->selectRaw('player_id as id, COUNT(*) as votes')
-            ->groupBy('player_id')
+        $topSquad = Vote::where('votes.type', 'squad')
+            ->join('players', 'players.id', '=', 'votes.player_id')
+            ->selectRaw('votes.player_id as id, players.full_name as name, COUNT(*) as votes')
+            ->groupBy('votes.player_id', 'players.full_name')
             ->orderByDesc('votes')
             ->limit(15)
             ->get()
             ->map(fn ($row) => [
                 'id'    => $row->id,
-                'name'  => '',   // enriched client-side from PLAYERS_MAP
+                'name'  => $row->name,
                 'votes' => $row->votes,
             ]);
 
-        $topEleven = Vote::where('type', 'starting_eleven')
-            ->selectRaw('player_id as id, COUNT(*) as votes')
-            ->groupBy('player_id')
+        $topEleven = Vote::where('votes.type', 'starting_eleven')
+            ->join('players', 'players.id', '=', 'votes.player_id')
+            ->selectRaw('votes.player_id as id, players.full_name as name, COUNT(*) as votes')
+            ->groupBy('votes.player_id', 'players.full_name')
             ->orderByDesc('votes')
             ->limit(11)
             ->get()
             ->map(fn ($row) => [
                 'id'    => $row->id,
-                'name'  => '',
+                'name'  => $row->name,
                 'votes' => $row->votes,
             ]);
 
