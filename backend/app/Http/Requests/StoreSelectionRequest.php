@@ -16,9 +16,9 @@ class StoreSelectionRequest extends FormRequest
         return [
             'session_id'        => ['required', 'string', 'max:100', 'regex:/^[a-zA-Z0-9_-]+$/'],
             'squad_players'     => ['required', 'array', 'min:1', 'max:23'],
-            'squad_players.*'   => ['required', 'integer', 'min:1', 'max:36'],
+            'squad_players.*'   => ['required', 'integer', 'exists:players,id'],
             'starting_eleven'   => ['nullable', 'array', 'max:11'],
-            'starting_eleven.*' => ['integer', 'min:1', 'max:36'],
+            'starting_eleven.*' => ['integer', 'exists:players,id'],
             'formation'         => ['required', 'string', 'in:4-3-3,4-4-2,4-2-3-1,3-5-2,4-1-4-1'],
         ];
     }
