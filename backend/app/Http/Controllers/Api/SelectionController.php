@@ -28,20 +28,20 @@ class SelectionController extends Controller
             'starting_eleven' => $data['starting_eleven'] ?? null,
             'formation'       => $data['formation'],
         ];
-
         if ($userId) {
             $updateData['user_id'] = $userId;
         }
 
-        // Upsert — one record per session_id
+        // Preserve share_token on updates; generate a new UUID on create
+        $existing   = Selection::where('session_id', $data['session_id'])->first();
+        $shareToken = $existing?->share_token ?? (string) \Illuminate\Support\Str::uuid();
+
         $selection = Selection::updateOrCreate(
             ['session_id' => $data['session_id']],
-            $updateData
+            array_merge($updateData, ['share_token' => $shareToken])
         );
 
-        // Record individual votes when a starting 11 is provided
         if (!empty($data['starting_eleven'])) {
-            // Remove any previous votes associated with these player IDs
             Vote::whereIn('player_id', array_merge(
                 $data['squad_players'],
                 $data['starting_eleven']
@@ -68,9 +68,10 @@ class SelectionController extends Controller
         }
 
         return response()->json([
-            'ok'      => true,
-            'message' => '¡Selección guardada con éxito!',
-            'id'      => $selection->id,
+            'ok'          => true,
+            'message'     => '¡Selección guardada con éxito!',
+            'id'          => $selection->id,
+            'share_token' => $selection->share_token,
         ], 201);
     }
 
