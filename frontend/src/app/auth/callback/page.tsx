@@ -4,6 +4,8 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
 import { getMe } from "@/lib/api";
 
+export const dynamic = "force-dynamic";
+
 export default function AuthCallbackPage() {
   const params   = useSearchParams();
   const router   = useRouter();
