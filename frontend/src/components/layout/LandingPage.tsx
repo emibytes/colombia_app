@@ -219,7 +219,7 @@ export default function LandingPage() {
 
           {/* Card grid — 2 columns, alternating vertical offsets via marginTop */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="grid grid-cols-2 gap-3 w-full max-w-[380px]">
+            <div className="grid grid-cols-2 gap-2 w-full max-w-[260px]">
               {MOSAIC.map((card) => (
                 <MosaicCard key={card.initials} {...card} />
               ))}
