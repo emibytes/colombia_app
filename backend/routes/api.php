@@ -24,8 +24,9 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::prefix('selections')->group(function () {
-    Route::post('/',     [SelectionController::class, 'store']);
-    Route::get('/stats', [SelectionController::class, 'stats']);
+    Route::post('/',             [SelectionController::class, 'store']);
+    Route::get('/stats',         [SelectionController::class, 'stats']);
+    Route::get('/share/{token}', [SelectionController::class, 'share']);
 });
 
 Route::get('confederations', [ConfederationController::class, 'index']);

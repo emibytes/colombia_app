@@ -76,6 +76,60 @@ class SelectionController extends Controller
     }
 
     /**
+     * GET /api/selections/share/{token}
+     * Public endpoint — returns a selection by share_token with enriched player data.
+     */
+    public function share(string $token): JsonResponse
+    {
+        $selection = Selection::where('share_token', $token)->first();
+
+        if (!$selection) {
+            return response()->json(['ok' => false, 'message' => 'Selección no encontrada.'], 404);
+        }
+
+        $allIds = array_unique(array_merge(
+            $selection->squad_players   ?? [],
+            $selection->starting_eleven ?? []
+        ));
+
+        $positionGroup = [
+            'goalkeeper' => 'GK',
+            'defender'   => 'DEF',
+            'midfielder' => 'MID',
+            'forward'    => 'FWD',
+        ];
+        $positionLabel = [
+            'goalkeeper' => 'Portero',
+            'defender'   => 'Defensa',
+            'midfielder' => 'Mediocampista',
+            'forward'    => 'Delantero',
+        ];
+
+        $players = \App\Models\Player::with('club')
+            ->whereIn('id', $allIds)
+            ->get()
+            ->keyBy('id')
+            ->map(fn ($p) => [
+                'id'       => $p->id,
+                'name'     => $p->full_name,
+                'position' => $positionLabel[$p->position] ?? $p->position,
+                'group'    => $positionGroup[$p->position]  ?? 'MID',
+                'age'      => $p->age ?? 0,
+                'club'     => $p->club?->name ?? '',
+                'country'  => $p->nationality ?? '',
+            ]);
+
+        return response()->json([
+            'ok'              => true,
+            'share_token'     => $token,
+            'squad_players'   => $selection->squad_players,
+            'starting_eleven' => $selection->starting_eleven,
+            'formation'       => $selection->formation,
+            'players'         => $players,
+        ]);
+    }
+
+    /**
      * GET /api/selections/stats
      * Global stats: most-selected players across all submissions.
      */
