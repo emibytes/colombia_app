@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Barlow_Condensed, Plus_Jakarta_Sans } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import SplashScreen from "@/components/ui/SplashScreen";
 
@@ -47,6 +48,7 @@ export default function RootLayout({
       <body className="min-h-dvh flex flex-col antialiased">
           <SplashScreen />
           {children}
+          <Analytics />
         </body>
     </html>
   );

@@ -64,9 +64,6 @@ export default function LineupClient() {
 
   const handleFormationChange = (f: FormationName) => {
     if (f === formation) return;
-    if (Object.keys(placedMap).length > 0) {
-      if (!confirm("Cambiar formación reinicia las posiciones. ¿Continuar?")) return;
-    }
     setFormation(f);
     setActivePlayer(null);
   };
@@ -178,7 +175,7 @@ export default function LineupClient() {
         {/* BENCH SIDEBAR */}
         <aside className="lg:sticky lg:top-[8rem]">
           <p className="font-display text-lg tracking-widest text-[var(--muted)] mb-3">BANCO · 23</p>
-          <div className="flex flex-col gap-1.5 max-h-[65vh] overflow-y-auto pr-1 scrollbar-thin">
+          <div className="flex flex-col gap-1.5 max-h-[65vh] overflow-y-auto pr-1">
             <AnimatePresence>
               {selectedPlayers.map((id, i) => {
                 const player  = playersMap[id];

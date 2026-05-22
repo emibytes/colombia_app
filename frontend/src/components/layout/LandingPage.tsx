@@ -228,6 +228,66 @@ export default function LandingPage() {
         </div>
 
       </div>
+
+      {/* ── SPONSORS SECTION ── */}
+      <section className="mt-24 md:mt-32 mb-24 md:mb-32 border-t border-[var(--border)] pt-16 md:pt-24">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={stagger}
+          className="max-w-4xl mx-auto px-4 sm:px-6"
+        >
+          <motion.h2
+            variants={fadeUp}
+            className="text-center font-display text-2xl md:text-3xl text-white mb-4"
+          >
+            Patrocinadores
+          </motion.h2>
+          <motion.p
+            variants={fadeUp}
+            className="text-center text-[var(--muted)] text-sm md:text-base mb-12 md:mb-16"
+          >
+            Gracias a nuestros aliados por hacer posible esta experiencia
+          </motion.p>
+
+          {/* Sponsors Grid */}
+          <motion.div
+            variants={fadeUp}
+            className="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-20"
+          >
+            {/* Emibytes */}
+            <a
+              href="#"
+              className="group flex items-center justify-center p-6 rounded-2xl
+                         border border-[var(--border)] bg-white/[0.02]
+                         transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]
+                         hover:border-[var(--yellow)] hover:bg-white/[0.04] hover:-translate-y-1"
+            >
+              <img
+                src="/emibytes-logo.png"
+                alt="Emibytes"
+                className="h-16 md:h-20 object-contain transition-transform duration-300 group-hover:scale-110"
+              />
+            </a>
+
+            {/* Luisafer */}
+            <a
+              href="#"
+              className="group flex items-center justify-center p-6 rounded-2xl
+                         border border-[var(--border)] bg-white/[0.02]
+                         transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]
+                         hover:border-[var(--yellow)] hover:bg-white/[0.04] hover:-translate-y-1"
+            >
+              <img
+                src="/luisafer-logo.jpeg"
+                alt="Luisafer"
+                className="h-16 md:h-20 object-contain transition-transform duration-300 group-hover:scale-110"
+              />
+            </a>
+          </motion.div>
+        </motion.div>
+      </section>
     </main>
   );
 }
