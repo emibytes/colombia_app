@@ -340,6 +340,70 @@ export default function ResultClient() {
         </motion.div>
       )}
 
+      {/* DT comparison gauge — only shown when backend has dt_squad configured */}
+      {stats?.dt_squad && stats.dt_squad.length > 0 && (() => {
+        const dtSet   = new Set(stats.dt_squad);
+        const matched = selectedPlayers.filter((id) => dtSet.has(id)).length;
+        const total   = stats.dt_squad.length;
+        const dtPct   = Math.round((matched / total) * 100);
+        const circumference = 2 * Math.PI * 40;
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45, duration: 0.6, ease: EASE_OUT }}
+            className="max-w-screen-xl mx-auto px-4 mb-10"
+          >
+            <div className="bg-[rgba(0,80,200,0.06)] border border-[var(--border)] rounded-[2rem] p-1.5">
+              <div className="bg-[var(--card2)] rounded-[calc(2rem-5px)] p-5 flex flex-col sm:flex-row items-center gap-6">
+                {/* Circular gauge */}
+                <div className="relative w-28 h-28 shrink-0">
+                  <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="10" />
+                    <motion.circle
+                      cx="50" cy="50" r="40" fill="none"
+                      stroke="url(#dtGrad)" strokeWidth="10"
+                      strokeLinecap="round"
+                      strokeDasharray={circumference}
+                      initial={{ strokeDashoffset: circumference }}
+                      animate={{ strokeDashoffset: circumference * (1 - dtPct / 100) }}
+                      transition={{ delay: 0.55, duration: 1.2, ease: EASE_OUT }}
+                    />
+                    <defs>
+                      <linearGradient id="dtGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="var(--blue)" />
+                        <stop offset="100%" stopColor="var(--yellow)" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="font-display text-2xl text-[var(--yellow)]">{dtPct}%</span>
+                  </div>
+                </div>
+                {/* Text */}
+                <div>
+                  <h2 className="font-display text-2xl text-[var(--yellow)] tracking-wide mb-1">
+                    VS. EL DT OFICIAL
+                  </h2>
+                  <p className="text-[var(--muted)] text-sm leading-relaxed">
+                    {dtPct >= 80
+                      ? "¡Pensás igual que el DT! Tu selección casi coincide con la oficial."
+                      : dtPct >= 60
+                      ? "Muy buen ojo. La mayoría de tus elegidos están en la lista del DT."
+                      : dtPct >= 40
+                      ? "Tienes tus propias apuestas. Algunos coinciden con el DT, otros no."
+                      : "Tu selección es muy diferente a la del DT. ¡Eres un selector audaz!"}
+                  </p>
+                  <p className="text-[10px] text-[var(--muted)] mt-2 uppercase tracking-widest">
+                    {matched} de {total} jugadores coinciden con la lista oficial
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        );
+      })()}
+
       {/* ── Action buttons ──────────────────────────── */}
       <div className="max-w-screen-xl mx-auto px-4 mb-6 flex flex-wrap gap-3 justify-center">
         <motion.button
