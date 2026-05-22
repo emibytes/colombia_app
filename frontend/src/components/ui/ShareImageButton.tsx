@@ -30,6 +30,7 @@ export default function ShareImageButton({ captureRef, filename = "mi-seleccion-
         await navigator.share({
           title: "Mi Selección Colombia 2026",
           text:  "¡Esta es mi selección Colombia para el Mundial 2026! ¿La tuya?",
+          url:   "https://miseleccion.emibytes.com",
           files: [file],
         });
       } else {
