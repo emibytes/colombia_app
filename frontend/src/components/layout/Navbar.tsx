@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
 import { logout } from "@/lib/api";
 import { cn } from "@/lib/utils";
+import Logo from "@/components/ui/Logo";
 
 const STEPS = [
   { href: "/",          label: "Inicio"    },
@@ -24,15 +25,22 @@ export default function Navbar() {
   }
 
   return (
+    <>
+    {/* Gradient mask — enmascara el contenido que scrollea bajo el navbar */}
+    <div
+      className="fixed top-0 left-0 right-0 z-[45] pointer-events-none h-[4.5rem]"
+      style={{ background: "linear-gradient(to bottom, var(--dark) 0%, var(--dark) 55%, transparent 100%)" }}
+    />
     <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-3xl">
       <div className="bg-[rgba(5,8,15,0.8)] backdrop-blur-2xl border border-[var(--border)] rounded-full px-3 py-2 flex items-center justify-between gap-2 shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
 
         {/* Logo */}
         <Link
           href="/"
-          className="font-display text-xl tracking-widest text-[var(--yellow)] hover:opacity-80 transition-opacity duration-300 pl-1 flex items-center gap-1.5 shrink-0"
+          className="hover:opacity-80 transition-opacity duration-300 pl-1 shrink-0"
+          aria-label="Mi Selección Colombia — Inicio"
         >
-          🇨🇴 <span className="text-white/80">COL</span>2026
+          <Logo size={30} withWordmark />
         </Link>
 
         {/* Steps — desktop */}
@@ -109,5 +117,6 @@ export default function Navbar() {
         </div>
       </div>
     </header>
+    </>
   );
 }

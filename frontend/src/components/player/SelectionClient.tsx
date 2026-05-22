@@ -21,10 +21,17 @@ export default function SelectionClient() {
   const [filter, setFilter]     = useState<Filter>("ALL");
   const [search, setSearch]     = useState("");
   const [showGoal, setShowGoal] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     getColombiaPlayers().then(setPlayers).catch(() => null);
   }, [setPlayers]);
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 8);
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
 
   const count    = selectedPlayers.length;
   const pct      = Math.round((count / SQUAD_SIZE) * 100);
@@ -68,7 +75,7 @@ export default function SelectionClient() {
   return (
     <div className="min-h-dvh pb-28 pt-[4.5rem]">
       {/* ── Sticky counter bar ─────────────────────────── */}
-      <div className="sticky top-[4.5rem] z-40 bg-[rgba(5,8,15,0.94)] backdrop-blur-xl">
+      <div className={`sticky top-[4.5rem] z-40 bg-[rgba(5,8,15,0.94)] backdrop-blur-xl transition-shadow duration-300 ${scrolled ? "shadow-[0_6px_24px_rgba(0,0,0,0.6)]" : ""}`}>
         <div className="max-w-screen-xl mx-auto px-4 pt-2.5 pb-2">
           {/* Row 1: counter · progress · sound */}
           <div className="flex items-center gap-3 mb-2">
@@ -146,7 +153,7 @@ export default function SelectionClient() {
           transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
         >
           <span className="inline-flex items-center gap-2 bg-[rgba(252,209,22,0.08)] border border-[var(--border2)] rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.18em] font-semibold text-[var(--yellow)]">
-            Prelista oficial · {players.length} jugadores
+            Prelista oficial{players.length > 0 ? ` · ${players.length} jugadores` : ""}
           </span>
           <h1 className="font-display text-4xl md:text-5xl mt-2 tracking-wide">
             ELIGE TUS <span className="text-[var(--yellow)]">23</span>

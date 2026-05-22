@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "@phosphor-icons/react";
@@ -24,6 +24,13 @@ export default function LineupClient() {
   const sound = useSound();
   const [activePlayer, setActivePlayer] = useState<number | null>(null);
   const [showGoal, setShowGoal]         = useState(false);
+  const [scrolled, setScrolled]         = useState(false);
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 8);
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
 
   const placedCount  = Object.keys(placedMap).length;
   const formationDef = FORMATIONS[formation];
@@ -80,9 +87,9 @@ export default function LineupClient() {
   }
 
   return (
-    <div className="min-h-dvh pb-24">
+    <div className="min-h-dvh pb-24 pt-[4.5rem]">
       {/* ── Formation selector bar ─────────────────── */}
-      <div className="sticky top-[4.5rem] z-40 bg-[rgba(5,8,15,0.92)] backdrop-blur-xl border-b border-[var(--border)]">
+      <div className={`sticky top-[4.5rem] z-40 bg-[rgba(5,8,15,0.94)] backdrop-blur-xl transition-shadow duration-300 ${scrolled ? "shadow-[0_6px_24px_rgba(0,0,0,0.6)]" : ""}`}>
         <div className="max-w-screen-xl mx-auto px-4 py-2.5 flex items-center gap-3 flex-wrap">
           <span className="font-display text-sm tracking-widest text-[var(--muted)] shrink-0">FORMACIÓN</span>
           <div className="flex gap-1.5 flex-wrap">
@@ -106,6 +113,12 @@ export default function LineupClient() {
             <span className="text-[var(--muted)]"> / 11</span>
           </span>
         </div>
+      </div>
+      {/* tricolor separator */}
+      <div className="flex h-px">
+        <div className="flex-[3] bg-[var(--yellow)]/30" />
+        <div className="flex-[2] bg-[var(--blue)]/40" />
+        <div className="flex-[1.5] bg-[var(--red)]/35" />
       </div>
 
       {/* ── Main layout ────────────────────────────── */}

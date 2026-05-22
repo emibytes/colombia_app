@@ -59,7 +59,7 @@ export default function PlayerCard({ player, selected, disabled, onToggle }: Pro
         selected
           ? "border-[var(--yellow)] shadow-[0_0_24px_rgba(252,209,22,0.22),inset_0_1px_1px_rgba(252,209,22,0.15)]"
           : "border-[var(--border)] hover:border-[var(--border2)]",
-        disabled && !selected ? "opacity-35 pointer-events-none" : ""
+        disabled && !selected ? "opacity-50 saturate-50 pointer-events-none" : ""
       )}
     >
       {/* Radial glow on hover/selected */}
