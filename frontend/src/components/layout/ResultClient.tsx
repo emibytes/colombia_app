@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const EASE_OUT = [0.32, 0.72, 0, 1] as [number, number, number, number];
@@ -15,12 +15,14 @@ import PlayerAvatar from "@/components/ui/PlayerAvatar";
 import GoalOverlay from "@/components/ui/GoalOverlay";
 import FieldSVG from "@/components/field/FieldSVG";
 import FieldSpot from "@/components/field/FieldSpot";
+import ShareImageButton from "@/components/ui/ShareImageButton";
 
 type SaveStatus = "idle" | "saving" | "saved" | "error";
 
 export default function ResultClient() {
   const { selectedPlayers, placedMap, formation, playersMap, resetAll } = useSelectionStore();
   const sound      = useSound();
+  const captureRef = useRef<HTMLDivElement>(null);
   const [status,   setStatus]   = useState<SaveStatus>("idle");
   const [stats,    setStats]    = useState<StatsResponse | null>(null);
   const [showGoal, setShowGoal] = useState(false);
@@ -96,7 +98,7 @@ export default function ResultClient() {
       </div>
 
       {/* ── Content grid ───────────────────────────── */}
-      <div className="max-w-screen-xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+      <div ref={captureRef} className="max-w-screen-xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
 
         {/* Squad of 23 */}
         <motion.div
@@ -313,6 +315,8 @@ export default function ResultClient() {
            : status === "error"  ? "Error — reintentar"
            : "Guardar mi selección"}
         </motion.button>
+
+        <ShareImageButton captureRef={captureRef} />
 
         <Link href="/once">
           <button className="flex items-center gap-2 border border-[var(--border)] text-[var(--muted)] hover:text-white hover:border-[var(--border2)] font-semibold px-6 py-3.5 rounded-full text-sm transition-all duration-300">
