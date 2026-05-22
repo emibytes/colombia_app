@@ -1,7 +1,7 @@
 "use client";
 import { useState, RefObject } from "react";
 import { motion } from "framer-motion";
-import { ShareNetwork, DownloadSimple } from "@phosphor-icons/react";
+import { ShareNetwork, CheckCircle } from "@phosphor-icons/react";
 
 interface Props {
   captureRef: RefObject<HTMLDivElement | null>;
@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function ShareImageButton({ captureRef, filename = "mi-seleccion-colombia.png" }: Props) {
-  const [state, setState] = useState<"idle" | "loading" | "done">("idle");
+  const [state, setState] = useState<"idle" | "loading" | "done" | "error">("idle");
 
   const handle = async () => {
     if (!captureRef.current || state === "loading") return;
@@ -33,15 +33,23 @@ export default function ShareImageButton({ captureRef, filename = "mi-seleccion-
           files: [file],
         });
       } else {
-        const a  = document.createElement("a");
-        a.href   = dataUrl;
+        const a = document.createElement("a");
+        a.href = dataUrl;
         a.download = filename;
+        a.style.display = "none";
+        document.body.appendChild(a);
         a.click();
+        document.body.removeChild(a);
       }
       setState("done");
       setTimeout(() => setState("idle"), 2500);
-    } catch {
-      setState("idle");
+    } catch (err) {
+      if ((err as DOMException)?.name === "AbortError") {
+        setState("idle"); // user dismissed share sheet — silent reset
+      } else {
+        setState("error");
+        setTimeout(() => setState("idle"), 2500);
+      }
     }
   };
 
@@ -49,15 +57,15 @@ export default function ShareImageButton({ captureRef, filename = "mi-seleccion-
     <motion.button
       onClick={handle}
       disabled={state === "loading"}
-      className="group flex items-center gap-2.5 border border-[var(--border)] text-[var(--muted)] hover:text-white hover:border-[var(--yellow)] font-semibold px-6 py-3.5 rounded-full text-sm transition-all duration-300"
+      className="flex items-center gap-2.5 border border-[var(--border)] text-[var(--muted)] hover:text-white hover:border-[var(--yellow)] font-semibold px-6 py-3.5 rounded-full text-sm transition-all duration-300"
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.97 }}
     >
-      {state === "done"
-        ? <DownloadSimple size={18} weight="bold" />
-        : <ShareNetwork  size={18} weight="bold" />}
+      {state === "done"  ? <CheckCircle size={18} weight="bold" />
+       : <ShareNetwork size={18} weight="bold" />}
       {state === "loading" ? "Generando imagen…"
        : state === "done"  ? "¡Imagen lista!"
+       : state === "error" ? "Error — intenta de nuevo"
        : "Compartir mi selección"}
     </motion.button>
   );
