@@ -177,15 +177,7 @@ export default function ResultClient() {
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/emibytes-logo.png" alt="emibytes" style={{ height: 22, width: "auto" }} />
-          <div style={{ textAlign: "center" }}>
-            <p style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", letterSpacing: "0.12em", textTransform: "uppercase", margin: "0 0 2px" }}>
-              Elige tu selección en
-            </p>
-            <p style={{ fontSize: 13, color: "#FCD116", fontWeight: 700, letterSpacing: "0.04em", margin: 0 }}>
-              miseleccion.emibytes.com
-            </p>
-          </div>
-          <p style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", fontWeight: 600, letterSpacing: "0.1em", margin: 0 }}>
+          <p style={{ fontSize: 11, color: "#FCD116", fontWeight: 600, letterSpacing: "0.1em", margin: 0 }}>
             #MiSeleccionColombia
           </p>
         </div>
