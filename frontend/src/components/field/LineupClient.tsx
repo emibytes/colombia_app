@@ -205,7 +205,7 @@ export default function LineupClient() {
                           : "border-[var(--border)] hover:border-[var(--border2)] hover:translate-x-1"
                     )}
                   >
-                    <PlayerAvatar name={player.name} group={player.group} size="sm" />
+                    <PlayerAvatar name={player.name} group={player.group} photo={player.photo} size="sm" />
                     <div className="flex-1 min-w-0">
                       <p className="text-[0.78rem] font-semibold truncate">{player.name}</p>
                       <p className="text-[10px] text-[var(--muted)] uppercase tracking-wide">{player.position}</p>

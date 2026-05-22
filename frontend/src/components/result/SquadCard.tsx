@@ -30,7 +30,7 @@ export default function SquadCard({ playerIds, playersMap }: Props) {
             return (
               <div key={id} className="flex items-center gap-3 py-1.5 border-b border-[var(--border)] last:border-0">
                 <span className="font-display text-lg text-[var(--muted)] w-6 text-center shrink-0">{i + 1}</span>
-                <PlayerAvatar name={player.name} group={player.group} size="sm" />
+                <PlayerAvatar name={player.name} group={player.group} photo={player.photo} size="sm" />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold truncate">{player.name}</p>
                   <p className="text-[10px] text-[var(--muted)]">{player.position} · {player.age} años</p>

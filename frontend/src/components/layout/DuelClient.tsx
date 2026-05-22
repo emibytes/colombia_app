@@ -165,7 +165,7 @@ export default function DuelClient({ shared }: Props) {
                   if (!player) return null;
                   return (
                     <div key={id} className="flex items-center gap-2 bg-white/4 rounded-xl px-3 py-2">
-                      <PlayerAvatar name={player.name} group={player.group} size="sm" />
+                      <PlayerAvatar name={player.name} group={player.group} photo={player.photo} size="sm" />
                       <span className="text-xs font-semibold truncate">{player.name}</span>
                     </div>
                   );

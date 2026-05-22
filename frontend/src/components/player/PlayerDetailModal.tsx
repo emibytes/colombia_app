@@ -49,7 +49,7 @@ export default function PlayerDetailModal({ player, selected, onClose, onToggle 
 
             <div className="px-6 pb-8">
               <div className="flex items-start gap-4 my-5">
-                <PlayerAvatar name={player.name} group={player.group} size="lg" />
+                <PlayerAvatar name={player.name} group={player.group} photo={player.photo} size="lg" />
                 <div className="flex-1 min-w-0">
                   <h2 id="player-modal-title" className="font-display text-2xl text-white leading-tight">{player.name}</h2>
                   <p className="text-[var(--muted)] text-sm mt-0.5">{POSITION_FULL[player.group] ?? player.position}</p>

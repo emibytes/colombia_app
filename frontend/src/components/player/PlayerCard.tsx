@@ -70,7 +70,7 @@ export default function PlayerCard({ player, selected, disabled, onToggle, onDet
       />
 
       <div className="relative z-10 bg-[var(--card2)] rounded-[calc(1.5rem-3px)] overflow-hidden shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
-        <PlayerAvatar name={player.name} group={player.group} size="lg" />
+        <PlayerAvatar name={player.name} group={player.group} photo={player.photo} size="lg" />
 
         <div className="px-3 pt-2.5 pb-3">
           <p className="font-heading font-bold text-[0.95rem] leading-tight text-white line-clamp-2">

@@ -95,6 +95,7 @@ interface ApiPlayerRaw {
   nationality:         string | null;
   in_wc_prelista_2026: boolean;
   club:                { name: string } | null;
+  photo_url:           string | null;
 }
 
 export async function getColombiaPlayers(): Promise<Player[]> {
@@ -110,5 +111,6 @@ export async function getColombiaPlayers(): Promise<Player[]> {
     age:      p.age ?? 0,
     club:     p.club?.name ?? "",
     country:  p.nationality ?? "",
+    photo:    p.photo_url ?? null,
   }));
 }

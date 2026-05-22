@@ -110,13 +110,14 @@ class SelectionController extends Controller
             ->get()
             ->keyBy('id')
             ->map(fn ($p) => [
-                'id'       => $p->id,
-                'name'     => $p->full_name,
-                'position' => $positionLabel[$p->position] ?? $p->position,
-                'group'    => $positionGroup[$p->position]  ?? 'MID',
-                'age'      => $p->age ?? 0,
-                'club'     => $p->club?->name ?? '',
-                'country'  => $p->nationality ?? '',
+                'id'        => $p->id,
+                'name'      => $p->full_name,
+                'position'  => $positionLabel[$p->position] ?? $p->position,
+                'group'     => $positionGroup[$p->position]  ?? 'MID',
+                'age'       => $p->age ?? 0,
+                'club'      => $p->club?->name ?? '',
+                'country'   => $p->nationality ?? '',
+                'photo_url' => $p->photo_url,
             ]);
 
         return response()->json([

@@ -9,6 +9,7 @@ export interface Player {
   age:      number;
   club:     string;
   country:  string;
+  photo?:   string | null;
 }
 
 // ─── Formation ───────────────────────────────────────────────────────────────
@@ -60,6 +61,7 @@ export interface SharedPlayer {
   age:      number;
   club:     string;
   country:  string;
+  photo?:   string | null;
 }
 
 export interface SharedSelectionResponse {
