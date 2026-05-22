@@ -14,13 +14,20 @@ export interface AdminPlayer {
 }
 
 export interface AdminClub {
-  id:           number;
-  name:         string;
-  short_name:   string | null;
-  country:      string | null;
-  country_code: string | null;
-  city:         string | null;
-  league_name:  string | null;
+  id:               number;
+  federation_id:    number | null;
+  federation?:      { id: number; name: string; short_name: string; country_code: string } | null;
+  name:             string;
+  short_name:       string | null;
+  country:          string | null;
+  country_code:     string | null;
+  city:             string | null;
+  stadium_name:     string | null;
+  stadium_capacity: number | null;
+  founded_year:     number | null;
+  league_name:      string | null;
+  logo_url:         string | null;
+  website:          string | null;
 }
 
 export interface AdminFederation {
@@ -52,12 +59,18 @@ export const adminApi = {
   getClubs: () =>
     http.get<AdminClub[]>("/admin/clubs").then((r) => r.data),
   createClub: (data: {
-    name:          string;
-    short_name?:   string | null;
-    country?:      string | null;
-    country_code?: string | null;
-    city?:         string | null;
-    league_name?:  string | null;
+    federation_id?:    number | null;
+    name:              string;
+    short_name?:       string | null;
+    country?:          string | null;
+    country_code?:     string | null;
+    city?:             string | null;
+    stadium_name?:     string | null;
+    stadium_capacity?: number | null;
+    founded_year?:     number | null;
+    league_name?:      string | null;
+    logo_url?:         string | null;
+    website?:          string | null;
   }) =>
     http.post<AdminClub>("/admin/clubs", data).then((r) => r.data),
   updateClub: (id: number, data: Partial<AdminClub>) =>
